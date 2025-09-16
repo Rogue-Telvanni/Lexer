@@ -1,3 +1,5 @@
+%option yylineno
+
 %{
 #include <stdio.h>
 %}
@@ -10,8 +12,12 @@ WHITESPACE [ \t\r\n]+
 COMMENT "//"[^\r\n]*
 OPERATORS "+"|"-"|"*"|"/"|"=="|"!="|"<"|">"|"<="|">="
 ASSIGN "="
-KEY_WORDS "if"|"else"|"while"|"for"|"let"|"var"
+KEY_WORDS "if"|"else"|"while"|"for"|"let"|"var"|"const"
 STRING_LITERAL \"[^\"]*\"
+UNTERMINATED_STRING_LITERAL \"[^\"]*\n
+DOT "."
+LPAREN "("
+RPAREN ")"
 
 %%
 
@@ -53,6 +59,24 @@ STRING_LITERAL \"[^\"]*\"
 {STRING_LITERAL} {
     printf("Matched String: %s\n", yytext);
 }
+
+{UNTERMINATED_STRING_LITERAL} {
+    fprintf(stderr, "Error: Unterminated string literal on line %d\n", yylineno);
+    exit(1);
+}
+
+{DOT} {
+    printf("Matched Dot: %s\n", yytext);
+}
+
+{LPAREN} {
+    printf("Matched Left Parenthesis: %s\n", yytext);
+}
+
+{RPAREN} {
+    printf("Matched Right Parenthesis: %s\n", yytext);
+}
+
 
 . {
     fprintf(stderr, "Lexical Error: Unexpected character '%s' on line %d\n", yytext, yylineno);
