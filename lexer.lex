@@ -1,5 +1,3 @@
-%option yylineno
-
 %{
 #include <stdio.h>
 #include <math.h>
@@ -13,13 +11,14 @@ FLOAT {DIGIT}+\.{DIGIT}+
 IDENTIFIER [a-zA-Z_][a-zA-Z0-9_]*
 WHITESPACE [ \t\r\n]+
 COMMENT "//"[^\r\n]*
-OPERATORS "+"|"-"|"*"|"/"|"=="|"!="|"<"|">"|"<="|">="
-ASSIGN "="
+OPERATORS "+"|"-"|"*"|"/"|"=="|"!="|"<"|">"|"<="|">="|"%"
+ASSIGN "="|":"
 KEY_WORDS "if"|"else"|"while"|"for"|"let"|"var"|"const"
 STRING_LITERAL \"[^\"]*\"
-UNTERMINATED_STRING_LITERAL \"[^\"]*\n
-DOT "."
-DELIMITER "{"|"}"|"("|")"|";"
+STRING_SINGLE_QUOTE '[^']*'
+STRING_BACKTICK_TEMPLATE_LITERA `[^`]*`
+DELIMITER "{"|"}"|"("|")"|"["|"]"|";"|","
+FUNCTION "function"
 
 %%
 
@@ -59,6 +58,10 @@ DELIMITER "{"|"}"|"("|")"|";"
     printf("Matched keyword: %s\n", yytext);
 }
 
+{FUNCTION} {
+    printf("Matched function: %s\n", yytext);
+}
+
 {ASSIGN} {
     printf("Matched Assign: %s\n", yytext);
 }
@@ -91,15 +94,15 @@ DELIMITER "{"|"}"|"("|")"|";"
     printf("Matched String: %s\n", yytext);
 }
 
-{UNTERMINATED_STRING_LITERAL} {
-    fprintf(stderr, "Error: Unterminated string literal on line %d\n", yylineno);
-    exit(1);
+{STRING_SINGLE_QUOTE} {
+    printf("Matched Single Quote String: %s\n", yytext);
+
 }
 
-{DOT} {
-    printf("Matched Dot: %s\n", yytext);
-}
+{STRING_BACKTICK_TEMPLATE_LITERA} {
+    printf("Matched Template Literal: %s\n", yytext);
 
+}
 
 <<EOF>> {
     printf("End of file found");
