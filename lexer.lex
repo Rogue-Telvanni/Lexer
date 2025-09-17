@@ -1,3 +1,5 @@
+%option yylineno
+
 %{
 #include <stdio.h>
 #include <math.h>
@@ -13,8 +15,10 @@ WHITESPACE [ \t\r\n]+
 COMMENT "//"[^\r\n]*
 OPERATORS "+"|"-"|"*"|"/"|"=="|"!="|"<"|">"|"<="|">="
 ASSIGN "="
-KEY_WORDS "if"|"else"|"while"|"for"|"let"|"var"
+KEY_WORDS "if"|"else"|"while"|"for"|"let"|"var"|"const"
 STRING_LITERAL \"[^\"]*\"
+UNTERMINATED_STRING_LITERAL \"[^\"]*\n
+DOT "."
 DELIMITER "{"|"}"|"("|")"|";"
 
 %%
@@ -86,6 +90,16 @@ DELIMITER "{"|"}"|"("|")"|";"
 {STRING_LITERAL} {
     printf("Matched String: %s\n", yytext);
 }
+
+{UNTERMINATED_STRING_LITERAL} {
+    fprintf(stderr, "Error: Unterminated string literal on line %d\n", yylineno);
+    exit(1);
+}
+
+{DOT} {
+    printf("Matched Dot: %s\n", yytext);
+}
+
 
 <<EOF>> {
     printf("End of file found");
