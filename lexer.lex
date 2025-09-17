@@ -1,5 +1,8 @@
 %{
 #include <stdio.h>
+#include <math.h>
+#include <stdlib.h> // For strtod
+#include <errno.h> // For checking errors
 %}
 
 DIGIT [0-9]
@@ -12,8 +15,41 @@ OPERATORS "+"|"-"|"*"|"/"|"=="|"!="|"<"|">"|"<="|">="
 ASSIGN "="
 KEY_WORDS "if"|"else"|"while"|"for"|"let"|"var"
 STRING_LITERAL \"[^\"]*\"
+DELIMITER "{"|"}"|"("|")"|";"
 
 %%
+
+{FLOAT} {
+    double value;
+    char *endptr;
+
+    // Reset errno to 0 before the call to distinguish between 0.0 and error
+    errno = 0;
+    
+    // strtod converts the string pointed to by yytext to a double value
+    value = strtod(yytext, &endptr);
+
+    // Check for potential errors
+    if (endptr == yytext) {
+        // No conversion could be performed
+        fprintf(stderr, "Error converting float: %s\n", yytext);
+    } else if (errno == ERANGE) {
+        // Value is out of the range of a double
+        if (value == HUGE_VAL) {
+            fprintf(stderr, "Error: Value %s is too large\n", yytext);
+        } else if (value == -HUGE_VAL) {
+            fprintf(stderr, "Error: Value %s is too small\n", yytext);
+        } else {
+            fprintf(stderr, "Error: Range error for %s\n", yytext);
+        }
+    } else {
+        printf("Matched Float: %f\n", value);
+    }
+}
+
+{INTEGER} {
+    printf("Matched Integer: %s\n", yytext);
+}
 
 {KEY_WORDS} {
     printf("Matched keyword: %s\n", yytext);
@@ -23,8 +59,16 @@ STRING_LITERAL \"[^\"]*\"
     printf("Matched Assign: %s\n", yytext);
 }
 
+{DELIMITER} {
+    printf("Matched Delimiter: %s\n", yytext);
+}
+
 {OPERATORS} {
     printf("Matched Operator: %s\n", yytext);
+}
+
+"." {
+    printf("Matched Point: %s\n", yytext);
 }
 
 {IDENTIFIER} {
@@ -39,19 +83,13 @@ STRING_LITERAL \"[^\"]*\"
     printf("Matched Comment: %s\n", yytext);
 }
 
-{FLOAT} {
-    printf("Matched Float: %s\n", yytext);
-    /* Here you can convert the string to a double */
-    double value = atof(yytext);
-    printf("Converted to double: %f\n", value);
-}
-
-{INTEGER} {
-    printf("Matched Integer: %s\n", yytext);
-}
-
 {STRING_LITERAL} {
     printf("Matched String: %s\n", yytext);
+}
+
+<<EOF>> {
+    printf("End of file found");
+    yyterminate();
 }
 
 . {
