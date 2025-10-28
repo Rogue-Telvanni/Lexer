@@ -11,7 +11,8 @@ WHITESPACE [ \t\r\n]+
 COMMENT "//"[^\r\n]*
 OPERATORS "+"|"-"|"*"|"/"|"=="|"!="|"<"|">"|"<="|">="|"%"
 ASSIGN "="|":"
-KEY_WORDS "if"|"else"|"while"|"for"|"let"|"var"|"const"|"return"
+LOOP "while"|"for"
+TYPE "let"|"var"|"const"
 STRING_LITERAL \"[^\"]*\"
 STRING_SINGLE_QUOTE '[^']*'
 STRING_BACKTICK_TEMPLATE_LITERAL `[^`]*`
@@ -42,6 +43,12 @@ FUNCTION "function"
 "]" { return RBRACKET; }
 
 ";" { return SEMI; }
+
+"return" { return RETURN; }
+
+"if" { return IF; }
+
+"else" { return ELSE; }
 
 "," { return COMMA; }
 

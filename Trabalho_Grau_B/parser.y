@@ -19,6 +19,9 @@
 %token RBRACKET
 %token SEMI
 %token COMMA
+%token RETURN
+%token IF
+%token ELSE
 %token OPERATORS
 %token POINT
 %token IDENT
@@ -35,6 +38,20 @@
 program: %empty
 
 function : FUNC IDENT LPAR RPAR LCURLY RCURLY {printf("program -> FUNC IDENT %s LPAR RPAR LCURLY RCURLY\n", $2);}
+
+arguments   : argument arguments {}
+argument    : IDENT {}
+            : COMMA IDENT
+            | %empty
+
+returnStmt : 'RETURN expression SEMI {print("return expresion %s", $2);}
+
+expression  : expression '+' expression     # addExpr
+            | expression '*' expression     # mulExpr
+            | LPAR expression RPAR            # parExpr
+            | methodCall                    # methodCallExpr
+            | variable                           # intExpr
+            | booleanExpression             # boolExpr ; // Unificação aqui
 
 variable: IDENT
         | NUMBER
