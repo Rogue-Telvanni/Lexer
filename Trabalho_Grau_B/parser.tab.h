@@ -59,15 +59,22 @@ extern int yydebug;
     KEY_WORD = 260,                /* KEY_WORD  */
     FUNC = 261,                    /* FUNC  */
     ASSING = 262,                  /* ASSING  */
-    DELIMITER = 263,               /* DELIMITER  */
-    OPERATORS = 264,               /* OPERATORS  */
-    POINT = 265,                   /* POINT  */
-    IDENT = 266,                   /* IDENT  */
-    WHITESPACE = 267,              /* WHITESPACE  */
-    COMMENT = 268,                 /* COMMENT  */
-    STRING_LITERAL = 269,          /* STRING_LITERAL  */
-    STRING_SINGLE_QUOTE = 270,     /* STRING_SINGLE_QUOTE  */
-    STRING_BACKTICK_TEMPLATE_LITERAL = 271 /* STRING_BACKTICK_TEMPLATE_LITERAL  */
+    LPAR = 263,                    /* LPAR  */
+    RPAR = 264,                    /* RPAR  */
+    LCURLY = 265,                  /* LCURLY  */
+    RCURLY = 266,                  /* RCURLY  */
+    LBRACKET = 267,                /* LBRACKET  */
+    RBRACKET = 268,                /* RBRACKET  */
+    SEMI = 269,                    /* SEMI  */
+    COMMA = 270,                   /* COMMA  */
+    OPERATORS = 271,               /* OPERATORS  */
+    POINT = 272,                   /* POINT  */
+    IDENT = 273,                   /* IDENT  */
+    WHITESPACE = 274,              /* WHITESPACE  */
+    COMMENT = 275,                 /* COMMENT  */
+    STRING_LITERAL = 276,          /* STRING_LITERAL  */
+    STRING_SINGLE_QUOTE = 277,     /* STRING_SINGLE_QUOTE  */
+    STRING_BACKTICK_TEMPLATE_LITERAL = 278 /* STRING_BACKTICK_TEMPLATE_LITERAL  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif

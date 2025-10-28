@@ -69,12 +69,13 @@
 /* First part of user prologue.  */
 #line 1 "parser.y"
 
-    #include <stdio.h>
+  #include <stdio.h>
+  #include <math.h>
+  int yylex (void);
+  void yyerror (char const *);
+  extern int yylineno;
 
-    int yylex();
-    void yyerror(const char* error);
-
-#line 78 "parser.tab.c"
+#line 79 "parser.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -110,17 +111,24 @@ enum yysymbol_kind_t
   YYSYMBOL_KEY_WORD = 5,                   /* KEY_WORD  */
   YYSYMBOL_FUNC = 6,                       /* FUNC  */
   YYSYMBOL_ASSING = 7,                     /* ASSING  */
-  YYSYMBOL_DELIMITER = 8,                  /* DELIMITER  */
-  YYSYMBOL_OPERATORS = 9,                  /* OPERATORS  */
-  YYSYMBOL_POINT = 10,                     /* POINT  */
-  YYSYMBOL_IDENT = 11,                     /* IDENT  */
-  YYSYMBOL_WHITESPACE = 12,                /* WHITESPACE  */
-  YYSYMBOL_COMMENT = 13,                   /* COMMENT  */
-  YYSYMBOL_STRING_LITERAL = 14,            /* STRING_LITERAL  */
-  YYSYMBOL_STRING_SINGLE_QUOTE = 15,       /* STRING_SINGLE_QUOTE  */
-  YYSYMBOL_STRING_BACKTICK_TEMPLATE_LITERAL = 16, /* STRING_BACKTICK_TEMPLATE_LITERAL  */
-  YYSYMBOL_YYACCEPT = 17,                  /* $accept  */
-  YYSYMBOL_program = 18                    /* program  */
+  YYSYMBOL_LPAR = 8,                       /* LPAR  */
+  YYSYMBOL_RPAR = 9,                       /* RPAR  */
+  YYSYMBOL_LCURLY = 10,                    /* LCURLY  */
+  YYSYMBOL_RCURLY = 11,                    /* RCURLY  */
+  YYSYMBOL_LBRACKET = 12,                  /* LBRACKET  */
+  YYSYMBOL_RBRACKET = 13,                  /* RBRACKET  */
+  YYSYMBOL_SEMI = 14,                      /* SEMI  */
+  YYSYMBOL_COMMA = 15,                     /* COMMA  */
+  YYSYMBOL_OPERATORS = 16,                 /* OPERATORS  */
+  YYSYMBOL_POINT = 17,                     /* POINT  */
+  YYSYMBOL_IDENT = 18,                     /* IDENT  */
+  YYSYMBOL_WHITESPACE = 19,                /* WHITESPACE  */
+  YYSYMBOL_COMMENT = 20,                   /* COMMENT  */
+  YYSYMBOL_STRING_LITERAL = 21,            /* STRING_LITERAL  */
+  YYSYMBOL_STRING_SINGLE_QUOTE = 22,       /* STRING_SINGLE_QUOTE  */
+  YYSYMBOL_STRING_BACKTICK_TEMPLATE_LITERAL = 23, /* STRING_BACKTICK_TEMPLATE_LITERAL  */
+  YYSYMBOL_YYACCEPT = 24,                  /* $accept  */
+  YYSYMBOL_program = 25                    /* program  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -451,7 +459,7 @@ union yyalloc
 #define YYLAST   0
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  17
+#define YYNTOKENS  24
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  2
 /* YYNRULES -- Number of rules.  */
@@ -460,7 +468,7 @@ union yyalloc
 #define YYNSTATES  3
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   271
+#define YYMAXUTOK   278
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -501,14 +509,14 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16
+      15,    16,    17,    18,    19,    20,    21,    22,    23
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    27,    27
+       0,    35,    35
 };
 #endif
 
@@ -525,7 +533,8 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
 static const char *const yytname[] =
 {
   "\"end of file\"", "error", "\"invalid token\"", "FLOAT", "NUMBER",
-  "KEY_WORD", "FUNC", "ASSING", "DELIMITER", "OPERATORS", "POINT", "IDENT",
+  "KEY_WORD", "FUNC", "ASSING", "LPAR", "RPAR", "LCURLY", "RCURLY",
+  "LBRACKET", "RBRACKET", "SEMI", "COMMA", "OPERATORS", "POINT", "IDENT",
   "WHITESPACE", "COMMENT", "STRING_LITERAL", "STRING_SINGLE_QUOTE",
   "STRING_BACKTICK_TEMPLATE_LITERAL", "$accept", "program", YY_NULLPTR
 };
@@ -591,13 +600,13 @@ static const yytype_int8 yycheck[] =
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    18,     0
+       0,    25,     0
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    17,    18
+       0,    24,    25
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
@@ -1067,7 +1076,7 @@ yyreduce:
   switch (yyn)
     {
 
-#line 1071 "parser.tab.c"
+#line 1080 "parser.tab.c"
 
       default: break;
     }
@@ -1260,7 +1269,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 29 "parser.y"
+#line 37 "parser.y"
 
 
 int main (void){
@@ -1268,5 +1277,5 @@ int main (void){
 }
 
 void yyerror(const char* error){
-    printf("Error: %s\n", error);
+    printf("Error: %s on line %d\n", error, yylineno);
 }

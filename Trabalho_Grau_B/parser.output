@@ -5,7 +5,14 @@ Terminals unused in grammar
     KEY_WORD
     FUNC
     ASSING
-    DELIMITER
+    LPAR
+    RPAR
+    LCURLY
+    RCURLY
+    LBRACKET
+    RBRACKET
+    SEMI
+    COMMA
     OPERATORS
     POINT
     IDENT
@@ -32,22 +39,29 @@ Terminals, with rules where they appear
     KEY_WORD (260)
     FUNC (261)
     ASSING (262)
-    DELIMITER (263)
-    OPERATORS (264)
-    POINT (265)
-    IDENT (266)
-    WHITESPACE (267)
-    COMMENT (268)
-    STRING_LITERAL (269)
-    STRING_SINGLE_QUOTE (270)
-    STRING_BACKTICK_TEMPLATE_LITERAL (271)
+    LPAR (263)
+    RPAR (264)
+    LCURLY (265)
+    RCURLY (266)
+    LBRACKET (267)
+    RBRACKET (268)
+    SEMI (269)
+    COMMA (270)
+    OPERATORS (271)
+    POINT (272)
+    IDENT (273)
+    WHITESPACE (274)
+    COMMENT (275)
+    STRING_LITERAL (276)
+    STRING_SINGLE_QUOTE (277)
+    STRING_BACKTICK_TEMPLATE_LITERAL (278)
 
 
 Nonterminals, with rules where they appear
 
-    $accept (17)
+    $accept (24)
         on left: 0
-    program (18)
+    program (25)
         on left: 1
         on right: 0
 

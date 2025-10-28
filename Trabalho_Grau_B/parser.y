@@ -1,8 +1,9 @@
 %{
-    #include <stdio.h>
-
-    int yylex();
-    void yyerror(const char* error);
+  #include <stdio.h>
+  #include <math.h>
+  int yylex (void);
+  void yyerror (char const *);
+  extern int yylineno;
 %}
 
 %token FLOAT
@@ -10,7 +11,14 @@
 %token KEY_WORD
 %token FUNC
 %token ASSING
-%token DELIMITER
+%token LPAR
+%token RPAR
+%token LCURLY
+%token RCURLY
+%token LBRACKET
+%token RBRACKET
+%token SEMI
+%token COMMA
 %token OPERATORS
 %token POINT
 %token IDENT
@@ -26,6 +34,11 @@
 
 program: %empty
 
+function : FUNC IDENT LPAR RPAR LCURLY RCURLY {printf("program -> FUNC IDENT %s LPAR RPAR LCURLY RCURLY\n", $2);}
+
+variable: IDENT
+        | NUMBER
+
 %%
 
 int main (void){
@@ -33,5 +46,5 @@ int main (void){
 }
 
 void yyerror(const char* error){
-    printf("Error: %s\n", error);
+    printf("Error: %s on line %d\n", error, yylineno);
 }

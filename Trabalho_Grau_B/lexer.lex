@@ -11,11 +11,10 @@ WHITESPACE [ \t\r\n]+
 COMMENT "//"[^\r\n]*
 OPERATORS "+"|"-"|"*"|"/"|"=="|"!="|"<"|">"|"<="|">="|"%"
 ASSIGN "="|":"
-KEY_WORDS "if"|"else"|"while"|"for"|"let"|"var"|"const"
+KEY_WORDS "if"|"else"|"while"|"for"|"let"|"var"|"const"|"return"
 STRING_LITERAL \"[^\"]*\"
 STRING_SINGLE_QUOTE '[^']*'
 STRING_BACKTICK_TEMPLATE_LITERAL `[^`]*`
-DELIMITER "{"|"}"|"("|")"|"["|"]"|";"|","
 FUNCTION "function"
 
 %%
@@ -30,7 +29,21 @@ FUNCTION "function"
 
 {ASSIGN} { return ASSING; }
 
-{DELIMITER} { return DELIMITER; }
+"(" { return LPAR; }
+
+")" { return RPAR; }
+
+"{" { return LCURLY; }
+
+"}" { return RCURLY; }
+
+"[" { return LBRACKET; }
+
+"]" { return RBRACKET; }
+
+";" { return SEMI; }
+
+"," { return COMMA; }
 
 {OPERATORS} { return OPERATORS; }
 
@@ -38,9 +51,9 @@ FUNCTION "function"
 
 {IDENTIFIER} { return IDENT; }
 
-{WHITESPACE} { return WHITESPACE; }
+{WHITESPACE} { /*ignora*/ }
 
-{COMMENT} { return COMMENT; }
+{COMMENT} { /*ignora*/ }
 
 {STRING_LITERAL} { return STRING_LITERAL; }
 
@@ -59,3 +72,7 @@ FUNCTION "function"
 }
 
 %%
+
+int yywrap(void) {
+    return 1;
+}
