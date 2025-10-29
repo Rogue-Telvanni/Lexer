@@ -17,13 +17,12 @@ STRING_SINGLE_QUOTE '[^']*'
 STRING_BACKTICK_TEMPLATE_LITERAL `[^`]*`
 FUNCTION "function"
 
+
 %%
 
 {FLOAT} { return FLOAT; }
 
 {INTEGER} { return NUMBER; }
-
-{KEY_WORDS} { return KEY_WORD; }
 
 {FUNCTION} { return FUNC; }
 
@@ -49,8 +48,15 @@ FUNCTION "function"
 
 "else" { return ELSE; }
 
-"," { return COMMA; }
+"true" { return TRUE; }
 
+"false" { return FALSE; }
+
+"&&" { return AND; }
+
+"||" {return OR; }
+
+"," { return COMMA; }
 
 "+"     { return PLUS; }
 "-"     { return MINUS; }
@@ -63,6 +69,8 @@ FUNCTION "function"
 "<="    { return LEQ; }
 ">="    { return MEQ; }
 "%"     { return REST; }
+
+"!"     { return NOT; }
 
 "." { return POINT; }
 
