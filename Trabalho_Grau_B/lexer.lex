@@ -9,7 +9,6 @@ FLOAT {DIGIT}+\.{DIGIT}+
 IDENTIFIER [a-zA-Z_][a-zA-Z0-9_]*
 WHITESPACE [ \t\r\n]+
 COMMENT "//"[^\r\n]*
-OPERATORS "+"|"-"|"*"|"/"|"=="|"!="|"<"|">"|"<="|">="|"%"
 ASSIGN "="|":"
 LOOP "while"|"for"
 TYPE "let"|"var"|"const"
@@ -52,7 +51,18 @@ FUNCTION "function"
 
 "," { return COMMA; }
 
-{OPERATORS} { return OPERATORS; }
+
+"+"     { return PLUS; }
+"-"     { return MINUS; }
+"*"     { return MULT; }
+"/"     { return DIV; }
+"=="    { return EQUAL; }
+"!="    { return DIFF; }
+"<"     { return LESS; }
+">"     { return MORE; }
+"<="    { return LEQ; }
+">="    { return MEQ; }
+"%"     { return REST; }
 
 "." { return POINT; }
 

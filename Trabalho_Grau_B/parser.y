@@ -25,6 +25,17 @@
 %token OPERATORS
 %token POINT
 %token IDENT
+%token PLUS
+%token MINUS
+%token MULT
+%token DIV
+%token EQUAL
+%token DIFF
+%token LESS
+%token MORE
+%token LEQ
+%token MEQ
+%token REST
 %token WHITESPACE
 %token COMMENT
 %token STRING_LITERAL
@@ -37,21 +48,22 @@
 
 program: %empty
 
-function : FUNC IDENT LPAR RPAR LCURLY RCURLY {printf("program -> FUNC IDENT %s LPAR RPAR LCURLY RCURLY\n", $2);}
+function : FUNC IDENT LPAR arguments RPAR LCURLY RCURLY {printf("program -> FUNC IDENT %s LPAR RPAR LCURLY RCURLY\n", $2);}
 
 arguments   : argument arguments {}
 argument    : IDENT {}
             : COMMA IDENT
             | %empty
 
-returnStmt : 'RETURN expression SEMI {print("return expresion %s", $2);}
+returnStmt : RETURN expression SEMI {print("return expresion %s", $2);}
 
-expression  : expression '+' expression     # addExpr
-            | expression '*' expression     # mulExpr
-            | LPAR expression RPAR            # parExpr
-            | methodCall                    # methodCallExpr
-            | variable                           # intExpr
-            | booleanExpression             # boolExpr ; // Unificação aqui
+expression  : expression PLUS expression     # addExpr
+            | expression MULT expression     # mulExpr
+            | expression REST expression
+            | LPAR expression RPAR           # parExpr
+            | methodCall                     # methodCallExpr
+            | variable                       # intExpr
+            | booleanExpression              # boolExpr ; // Unificação aqui
 
 variable: IDENT
         | NUMBER
