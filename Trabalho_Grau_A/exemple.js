@@ -1,6 +1,4 @@
   let gameState = {
-$$$$$$$$$$$$$$$$$$$$$$$$
-
             score: 0,
             level: 1,
             progress: 0,

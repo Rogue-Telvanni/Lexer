@@ -26,7 +26,9 @@ FUNCTION "function"
 
 {FUNCTION} { return FUNC; }
 
-{ASSIGN} { return ASSING; }
+{TYPE} {return TYPE; }
+
+{ASSIGN} { return ASSIGN; }
 
 "(" { return LPAR; }
 
@@ -62,6 +64,7 @@ FUNCTION "function"
 "-"     { return MINUS; }
 "*"     { return MULT; }
 "/"     { return DIV; }
+"==="    { return TEQUAL; }
 "=="    { return EQUAL; }
 "!="    { return DIFF; }
 "<"     { return LESS; }

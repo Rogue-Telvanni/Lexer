@@ -4,6 +4,7 @@
   int yylex (void);
   void yyerror (char const *);
   extern int yylineno;
+  extern int yydebug;
 %}
 
 %token FLOAT
@@ -29,6 +30,7 @@
 %token MULT
 %token DIV
 %token EQUAL
+%token TEQUAL
 %token DIFF
 %token LESS
 %token MORE
@@ -40,7 +42,7 @@
 %token AND
 %token OR
 %token NOT
-%token ASSIGN
+%token TYPE
 %token WHITESPACE
 %token COMMENT
 %token STRING_LITERAL
@@ -49,7 +51,7 @@
 
 
 /* declaração de qual lado deve iniciar a leitura*/
-%right ASSING
+%right ASSIGN
 %left OR
 %left AND
 %left EQUAL DIFF
@@ -57,6 +59,7 @@
 %left PLUS MINUS
 %left MULT DIV REST
 %right NOT
+%left POINT
 
 
 %start program
@@ -77,76 +80,85 @@ statement: function
          | command
          ;
 
-function : FUNC IDENT LPAR arguments RPAR LCURLY statement_list RCURLY {printf("program -> FUNC IDENT %s LPAR RPAR LCURLY RCURLY\n", $2);};
-
-arguments: argument_list_opt
+function : FUNC IDENT LPAR arguments RPAR LCURLY statement_list RCURLY { printf("REDUCE: function -> FUNC IDENT LPAR arguments RPAR LCURLY statement_list RCURLY\n"); }
+arguments: argument_list_opt { printf("REDUCE: arguments -> argument_list_opt\n"); }
          ;
 
 /* "argument_list_opt" significa "lista de argumentos opcional" (pode ser vazia) */
-argument_list_opt: %empty
-                 | argument_list
+argument_list_opt: %empty { printf("REDUCE: argument_list_opt -> empty\n"); }
+                 | argument_list { printf("REDUCE: argument_list_opt -> argument_list\n"); }
                  ;
 
 /* "argument_list" é a lista em si (uma ou mais expressões) */
-argument_list: expression
-             | argument_list COMMA expression
+argument_list: expression { printf("REDUCE: argument_list -> expression\n"); }
+             | argument_list COMMA expression { printf("REDUCE: argument_list -> argument_list COMMA expression\n"); }
              ;
 
-command     : assignment
-            | conditional
-            | method_call
-            | returnStmt
-            | block
-            | SEMI
+command     : assignment { printf("REDUCE: command -> assignment\n"); }
+            | conditional { printf("REDUCE: command -> conditional\n"); }
+            | method_call { printf("REDUCE: command -> method_call\n"); }
+            | returnStmt { printf("REDUCE: command -> returnStmt\n"); }
+            | block { printf("REDUCE: command -> block\n"); }
+            | variableDeclaration { printf("REDUCE: command -> variableDeclaration\n"); }
+            | SEMI { printf("REDUCE: command -> SEMI\n"); }
             ;
 
-method_call_expr: IDENT LPAR arguments RPAR;
+variableDeclaration : TYPE IDENT SEMI { printf("REDUCE: variableDeclaration -> TYPE IDENT SEMI\n"); }
+                    | TYPE assignment { printf("REDUCE: variableDeclaration -> TYPE assignment\n"); };
 
-method_call: method_call_expr SEMI;
+method_call_expr: expression LPAR arguments RPAR { printf("REDUCE: method_call_expr -> expression LPAR arguments RPAR\n"); };
 
-returnStmt  : RETURN expression SEMI {printf("return expresion %s", $2);};
+method_call: method_call_expr SEMI { printf("REDUCE: method_call -> method_call_expr SEMI\n"); };
 
-assignment  : IDENT ASSING expression SEMI {};
+returnStmt  : RETURN expression SEMI {printf("REDUCE: returnStmt -> RETURN expression SEMI\n");};
 
-conditional : IF LPAR expression RPAR command
-            | IF LPAR expression RPAR command ELSE command;
+assignment  : expression ASSIGN expression SEMI { printf("REDUCE: assignment -> expression ASSIGN expression SEMI\n"); };
 
-block       : LCURLY statement_list RCURLY 
+conditional : IF LPAR expression RPAR command { printf("REDUCE: conditional -> IF LPAR expression RPAR command\n"); }
+            | IF LPAR expression RPAR command ELSE command { printf("REDUCE: conditional -> IF LPAR expression RPAR command ELSE command\n"); };
+
+block       : LCURLY statement_list RCURLY { printf("REDUCE: block -> LCURLY statement_list RCURLY\n"); }
             ;
 
-expression  : expression PLUS expression
-            | expression MINUS expression
-            | expression MULT expression
-            | expression DIV expression
-            | expression REST expression
+expression  : expression PLUS expression { printf("REDUCE: expression -> expression PLUS expression\n"); }
+            | expression MINUS expression { printf("REDUCE: expression -> expression MINUS expression\n"); }
+            | expression MULT expression { printf("REDUCE: expression -> expression MULT expression\n"); }
+            | expression DIV expression { printf("REDUCE: expression -> expression DIV expression\n"); }
+            | expression REST expression { printf("REDUCE: expression -> expression REST expression\n"); }
+
+            | expression POINT IDENT { printf("REDUCE: expression -> expression POINT IDENT\n"); }
 
             /* Operadores booleanos e de comparação agora estão aqui */
-            | expression EQUAL expression
-            | expression DIFF expression
-            | expression LESS expression
-            | expression MORE expression
-            | expression LEQ expression
-            | expression MEQ expression
-            | expression AND expression
-            | expression OR expression
-            | NOT expression
+            | expression EQUAL expression { printf("REDUCE: expression -> expression EQUAL expression\n"); }
+            | expression TEQUAL expression { printf("REDUCE: expression -> expression TEQUAL expression\n"); }
+            | expression DIFF expression { printf("REDUCE: expression -> expression DIFF expression\n"); }
+            | expression LESS expression { printf("REDUCE: expression -> expression LESS expression\n"); }
+            | expression MORE expression { printf("REDUCE: expression -> expression MORE expression\n"); }
+            | expression LEQ expression { printf("REDUCE: expression -> expression LEQ expression\n"); }
+            | expression MEQ expression { printf("REDUCE: expression -> expression MEQ expression\n"); }
+            | expression AND expression { printf("REDUCE: expression -> expression AND expression\n"); }
+            | expression OR expression { printf("REDUCE: expression -> expression OR expression\n"); }
+            | NOT expression { printf("REDUCE: expression -> NOT expression\n"); }
 
-            | LPAR expression RPAR
-            | method_call_expr
-            | variable
-            | TRUE
-            | FALSE
+            | LPAR expression RPAR { printf("REDUCE: expression -> LPAR expression RPAR\n"); }
+            | method_call_expr { printf("REDUCE: expression -> method_call_expr\n"); }
+            | variable { printf("REDUCE: expression -> variable\n"); }
+            | TRUE { printf("REDUCE: expression -> TRUE\n"); }
+            | FALSE { printf("REDUCE: expression -> FALSE\n"); }
             ;                
 
 variable: IDENT
         | NUMBER
         | FLOAT
         | STRING_LITERAL
+        | STRING_SINGLE_QUOTE
+        | STRING_BACKTICK_TEMPLATE_LITERAL
         ;
 
 %%
 
 int main (void){
+    yydebug = 1;
     yyparse();
 }
 

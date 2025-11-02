@@ -77,23 +77,24 @@ extern int yydebug;
     MULT = 278,                    /* MULT  */
     DIV = 279,                     /* DIV  */
     EQUAL = 280,                   /* EQUAL  */
-    DIFF = 281,                    /* DIFF  */
-    LESS = 282,                    /* LESS  */
-    MORE = 283,                    /* MORE  */
-    LEQ = 284,                     /* LEQ  */
-    MEQ = 285,                     /* MEQ  */
-    REST = 286,                    /* REST  */
-    TRUE = 287,                    /* TRUE  */
-    FALSE = 288,                   /* FALSE  */
-    AND = 289,                     /* AND  */
-    OR = 290,                      /* OR  */
-    NOT = 291,                     /* NOT  */
-    WHITESPACE = 292,              /* WHITESPACE  */
-    COMMENT = 293,                 /* COMMENT  */
-    STRING_LITERAL = 294,          /* STRING_LITERAL  */
-    STRING_SINGLE_QUOTE = 295,     /* STRING_SINGLE_QUOTE  */
-    STRING_BACKTICK_TEMPLATE_LITERAL = 296, /* STRING_BACKTICK_TEMPLATE_LITERAL  */
-    ASSING = 297                   /* ASSING  */
+    TEQUAL = 281,                  /* TEQUAL  */
+    DIFF = 282,                    /* DIFF  */
+    LESS = 283,                    /* LESS  */
+    MORE = 284,                    /* MORE  */
+    LEQ = 285,                     /* LEQ  */
+    MEQ = 286,                     /* MEQ  */
+    REST = 287,                    /* REST  */
+    TRUE = 288,                    /* TRUE  */
+    FALSE = 289,                   /* FALSE  */
+    AND = 290,                     /* AND  */
+    OR = 291,                      /* OR  */
+    NOT = 292,                     /* NOT  */
+    TYPE = 293,                    /* TYPE  */
+    WHITESPACE = 294,              /* WHITESPACE  */
+    COMMENT = 295,                 /* COMMENT  */
+    STRING_LITERAL = 296,          /* STRING_LITERAL  */
+    STRING_SINGLE_QUOTE = 297,     /* STRING_SINGLE_QUOTE  */
+    STRING_BACKTICK_TEMPLATE_LITERAL = 298 /* STRING_BACKTICK_TEMPLATE_LITERAL  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
