@@ -1,3 +1,16 @@
+        // Carrega a tabela de referência
+        function loadReferenceTable() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = referenceData.map((item, index) => `
+                <tr class="hover:bg-gray-50 transition-colors cursor-pointer" onclick="highlightTableRow(${index})">
+                    <td class="p-4 font-mono font-bold text-indigo-600">${item.token}</td>
+                    <td class="p-4">${item.meaning}</td>
+                    <td class="p-4 font-mono text-sm bg-gray-100 rounded">${item.er}</td>
+                    <td class="p-4 font-mono text-sm text-gray-600">${item.examples}</td>
+                </tr>
+            `).join('');
+        }
+        
         function toggleTableMode() {
             const button = document.getElementById('tableMode');
             const table = document.getElementById('referenceTable');

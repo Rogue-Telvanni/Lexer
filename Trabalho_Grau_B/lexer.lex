@@ -60,6 +60,9 @@ FUNCTION "function"
 
 "," { return COMMA; }
 
+"=>" { return ARROW; }
+
+
 "+"     { return PLUS; }
 "-"     { return MINUS; }
 "*"     { return MULT; }

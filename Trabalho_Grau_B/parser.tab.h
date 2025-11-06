@@ -92,9 +92,10 @@ extern int yydebug;
     TYPE = 293,                    /* TYPE  */
     WHITESPACE = 294,              /* WHITESPACE  */
     COMMENT = 295,                 /* COMMENT  */
-    STRING_LITERAL = 296,          /* STRING_LITERAL  */
-    STRING_SINGLE_QUOTE = 297,     /* STRING_SINGLE_QUOTE  */
-    STRING_BACKTICK_TEMPLATE_LITERAL = 298 /* STRING_BACKTICK_TEMPLATE_LITERAL  */
+    ARROW = 296,                   /* ARROW  */
+    STRING_LITERAL = 297,          /* STRING_LITERAL  */
+    STRING_SINGLE_QUOTE = 298,     /* STRING_SINGLE_QUOTE  */
+    STRING_BACKTICK_TEMPLATE_LITERAL = 299 /* STRING_BACKTICK_TEMPLATE_LITERAL  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif

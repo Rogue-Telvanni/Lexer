@@ -45,6 +45,7 @@
 %token TYPE
 %token WHITESPACE
 %token COMMENT
+%token ARROW
 %token STRING_LITERAL
 %token STRING_SINGLE_QUOTE
 %token STRING_BACKTICK_TEMPLATE_LITERAL
@@ -60,7 +61,7 @@
 %left MULT DIV REST
 %right NOT
 %left POINT
-
+%right ARROW 
 
 %start program
 
@@ -145,6 +146,7 @@ expression  : expression PLUS expression { printf("REDUCE: expression -> express
             | variable { printf("REDUCE: expression -> variable\n"); }
             | TRUE { printf("REDUCE: expression -> TRUE\n"); }
             | FALSE { printf("REDUCE: expression -> FALSE\n"); }
+            | LPAR arguments RPAR ARROW expression { printf("REDUCE: expression -> LPAR arguments RPAR ARROW expression\n"); }
             ;                
 
 variable: IDENT
