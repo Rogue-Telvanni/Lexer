@@ -95,7 +95,10 @@ extern int yydebug;
     ARROW = 296,                   /* ARROW  */
     STRING_LITERAL = 297,          /* STRING_LITERAL  */
     STRING_SINGLE_QUOTE = 298,     /* STRING_SINGLE_QUOTE  */
-    STRING_BACKTICK_TEMPLATE_LITERAL = 299 /* STRING_BACKTICK_TEMPLATE_LITERAL  */
+    TEMPLATE_START = 299,          /* TEMPLATE_START  */
+    TEMPLATE_END = 300,            /* TEMPLATE_END  */
+    TEMPLATE_EXPR_START = 301,     /* TEMPLATE_EXPR_START  */
+    TEMPLATE_CHUNK = 302           /* TEMPLATE_CHUNK  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif

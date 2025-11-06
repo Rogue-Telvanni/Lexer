@@ -1,7 +1,12 @@
 %{
     #include <stdio.h>
     #include "parser.tab.h"
+
+    void go_to_template_state();
+    void go_to_initial_state();
 %}
+
+%x TEMPLATE
 
 DIGIT [0-9]
 INTEGER {DIGIT}+
@@ -90,7 +95,26 @@ FUNCTION "function"
 
 {STRING_SINGLE_QUOTE} { return STRING_SINGLE_QUOTE; }
 
-{STRING_BACKTICK_TEMPLATE_LITERAL} { return STRING_BACKTICK_TEMPLATE_LITERAL; }
+
+"`" { 
+    go_to_template_state();
+    return TEMPLATE_START; 
+}
+
+<TEMPLATE>"${" { 
+    go_to_initial_state();
+    return TEMPLATE_EXPR_START; 
+}
+
+<TEMPLATE>"`" { 
+    go_to_initial_state();
+    return TEMPLATE_END; 
+}
+
+<TEMPLATE>(\\.|[^`$])+ { 
+    return TEMPLATE_CHUNK; /* Retorna um "pedaço" de string */
+}
+
 
 <<EOF>> {
     printf("End of file found");
@@ -106,4 +130,12 @@ FUNCTION "function"
 
 int yywrap(void) {
     return 1;
+}
+
+void go_to_template_state() {
+    BEGIN(TEMPLATE);
+}
+
+void go_to_initial_state() {
+    BEGIN(INITIAL);
 }

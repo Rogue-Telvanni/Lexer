@@ -5,6 +5,9 @@
   void yyerror (char const *);
   extern int yylineno;
   extern int yydebug;
+
+  extern void go_to_template_state();
+  extern void go_to_initial_state();
 %}
 
 %token FLOAT
@@ -48,8 +51,13 @@
 %token ARROW
 %token STRING_LITERAL
 %token STRING_SINGLE_QUOTE
-%token STRING_BACKTICK_TEMPLATE_LITERAL
 
+
+/* 1. ADICIONE os 4 novos tokens */
+%token TEMPLATE_START
+%token TEMPLATE_END
+%token TEMPLATE_EXPR_START
+%token TEMPLATE_CHUNK
 
 /* declaração de qual lado deve iniciar a leitura*/
 %right ASSIGN
@@ -154,8 +162,23 @@ variable: IDENT
         | FLOAT
         | STRING_LITERAL
         | STRING_SINGLE_QUOTE
-        | STRING_BACKTICK_TEMPLATE_LITERAL
+        | template_literal
         ;
+
+template_literal: TEMPLATE_START template_body TEMPLATE_END 
+    { printf("REDUCE: template_literal -> `...`\n"); }
+    ;
+
+template_body: %empty 
+    { /* O corpo pode ser vazio */ }
+    | template_body template_part
+    { /* Constrói o corpo pedaço por pedaço */ }
+    ;
+
+template_part: TEMPLATE_CHUNK { printf("REDUCE: template_part -> TEMPLATE_CHUNK\n"); }
+    | TEMPLATE_EXPR_START expression RCURLY {printf("REDUCE: template_part -> ${expression}\n");
+        go_to_template_state();};
+
 
 %%
 
