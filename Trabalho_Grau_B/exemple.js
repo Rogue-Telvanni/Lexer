@@ -1,3 +1,47 @@
+        // AFDs definidos
+        const AFDs = {
+            ID: {
+                states: ['S', 'I'],
+                initialState: 'S',
+                acceptingStates: ['I'],
+                transitions: {
+                    'S': { 'letter|_': 'I' },
+                    'I': { 'letter|digit|_': 'I' }
+                },
+                description: 'Reconhece identificadores que começam com letra ou underscore, seguidos de letras, dígitos ou underscores.'
+            },
+            INT: {
+                states: ['q0', 'q1'],
+                initialState: 'q0',
+                acceptingStates: ['q1'],
+                transitions: {
+                    'q0': { 'digit': 'q1' },
+                    'q1': { 'digit': 'q1' }
+                },
+                description: 'Reconhece sequências de um ou mais dígitos decimais.'
+            },
+            REAL: {
+                states: ['q0', 'q1', 'q2', 'q3'],
+                initialState: 'q0',
+                acceptingStates: ['q3'],
+                transitions: {
+                    'q0': { 'digit': 'q1' },
+                    'q1': { 'digit': 'q1', '.': 'q2' },
+                    'q2': { 'digit': 'q3' },
+                    'q3': { 'digit': 'q3' }
+                },
+                description: 'Reconhece números com ponto decimal (formato: dígitos.dígitos).'
+            }
+        };
+        
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function () {
+            loadReferenceTable();
+            updateUI();
+            loadAFD('ID'); // Carrega AFD padrão
+            initializeAchievements();
+        });
+        
         // Carrega a tabela de referência
         function loadReferenceTable() {
             const tbody = document.getElementById('tableBody');

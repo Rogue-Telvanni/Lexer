@@ -14,7 +14,8 @@ FLOAT {DIGIT}+\.{DIGIT}+
 IDENTIFIER [a-zA-Z_][a-zA-Z0-9_]*
 WHITESPACE [ \t\r\n]+
 COMMENT "//"[^\r\n]*
-ASSIGN "="|":"
+ASSIGN "="
+COLON ":"
 LOOP "while"|"for"
 TYPE "let"|"var"|"const"
 STRING_LITERAL \"[^\"]*\"
@@ -34,6 +35,8 @@ FUNCTION "function"
 {TYPE} {return TYPE; }
 
 {ASSIGN} { return ASSIGN; }
+
+{COLON} { return COLON; }
 
 "(" { return LPAR; }
 
