@@ -1,31 +1,54 @@
+Nonterminals useless in grammar
+
+    object_literal
+    property_list_opt
+    property_list
+    property
+
+
 Terminals unused in grammar
 
+    COLON
     OPERATORS
     WHITESPACE
     COMMENT
 
 
-State 8 conflicts: 6 shift/reduce, 1 reduce/reduce
+Rules useless in grammar
+
+   68 object_literal: LCURLY property_list_opt RCURLY
+
+   69 property_list_opt: ε
+   70                  | property_list
+
+   71 property_list: property
+   72              | property_list COMMA property
+
+   73 property: lvalue COLON expression
+   74         | variable COLON expression
+
+
 State 33 conflicts: 1 shift/reduce
-State 46 conflicts: 1 shift/reduce
-State 47 conflicts: 1 shift/reduce
-State 58 conflicts: 2 shift/reduce
+State 44 conflicts: 1 shift/reduce
+State 45 conflicts: 1 shift/reduce
+State 51 conflicts: 2 shift/reduce
+State 92 conflicts: 2 shift/reduce
+State 93 conflicts: 2 shift/reduce
+State 94 conflicts: 2 shift/reduce
+State 95 conflicts: 2 shift/reduce
+State 96 conflicts: 2 shift/reduce
+State 97 conflicts: 16 shift/reduce
+State 98 conflicts: 2 shift/reduce
+State 99 conflicts: 2 shift/reduce
+State 100 conflicts: 2 shift/reduce
+State 101 conflicts: 2 shift/reduce
 State 102 conflicts: 2 shift/reduce
 State 103 conflicts: 2 shift/reduce
 State 104 conflicts: 2 shift/reduce
 State 105 conflicts: 2 shift/reduce
-State 106 conflicts: 2 shift/reduce
-State 107 conflicts: 16 shift/reduce
-State 108 conflicts: 2 shift/reduce
-State 109 conflicts: 2 shift/reduce
-State 110 conflicts: 2 shift/reduce
-State 111 conflicts: 2 shift/reduce
-State 112 conflicts: 2 shift/reduce
-State 113 conflicts: 2 shift/reduce
-State 114 conflicts: 2 shift/reduce
-State 115 conflicts: 2 shift/reduce
-State 131 conflicts: 2 shift/reduce
-State 132 conflicts: 1 shift/reduce
+State 120 conflicts: 2 shift/reduce
+State 121 conflicts: 1 shift/reduce
+State 131 conflicts: 1 reduce/reduce
 
 
 Grammar
@@ -43,46 +66,46 @@ Grammar
     6 function: FUNC IDENT LPAR arguments RPAR LCURLY statement_list RCURLY
 
     7 function_expression: FUNC LPAR arguments RPAR LCURLY statement_list RCURLY
+    8                    | FUNC IDENT LPAR arguments RPAR LCURLY statement_list RCURLY
 
-    8 arguments: argument_list_opt
+    9 arguments: argument_list_opt
 
-    9 argument_list_opt: ε
-   10                  | argument_list
+   10 argument_list_opt: ε
+   11                  | argument_list
 
-   11 argument_list: expression
-   12              | argument_list COMMA expression
+   12 argument_list: expression
+   13              | argument_list COMMA expression
 
-   13 command: assignment
-   14        | conditional
-   15        | method_call
-   16        | returnStmt
-   17        | block
-   18        | variableDeclaration
-   19        | SEMI
+   14 command: assignment
+   15        | conditional
+   16        | method_call
+   17        | returnStmt
+   18        | block
+   19        | variableDeclaration
+   20        | SEMI
 
-   20 variableDeclaration: TYPE IDENT SEMI
-   21                    | TYPE assignment
+   21 variableDeclaration: TYPE IDENT SEMI
+   22                    | TYPE assignment
 
-   22 method_call_expr: expression LPAR arguments RPAR
+   23 method_call_expr: expression LPAR arguments RPAR
 
-   23 method_call: method_call_expr SEMI
+   24 method_call: method_call_expr SEMI
 
-   24 returnStmt: RETURN expression SEMI
+   25 returnStmt: RETURN expression SEMI
 
-   25 assignment: lvalue ASSIGN expression SEMI
+   26 assignment: lvalue ASSIGN expression SEMI
 
-   26 conditional: IF LPAR expression RPAR command
-   27            | IF LPAR expression RPAR command ELSE command
+   27 conditional: IF LPAR expression RPAR command
+   28            | IF LPAR expression RPAR command ELSE command
 
-   28 block: LCURLY statement_list RCURLY
+   29 block: LCURLY statement_list RCURLY
 
-   29 expression: expression PLUS expression
-   30           | expression MINUS expression
-   31           | expression MULT expression
-   32           | expression DIV expression
-   33           | expression REST expression
-   34           | expression POINT IDENT
-   35           | lvalue
+   30 expression: expression PLUS expression
+   31           | expression MINUS expression
+   32           | expression MULT expression
+   33           | expression DIV expression
+   34           | expression REST expression
+   35           | expression POINT IDENT
    36           | expression EQUAL expression
    37           | expression TEQUAL expression
    38           | expression DIFF expression
@@ -96,11 +119,11 @@ Grammar
    46           | LPAR expression RPAR
    47           | method_call_expr
    48           | variable
-   49           | TRUE
-   50           | FALSE
-   51           | LPAR arguments RPAR ARROW expression
-   52           | function_expression
-   53           | object_literal
+   49           | lvalue
+   50           | TRUE
+   51           | FALSE
+   52           | LPAR arguments RPAR ARROW expression
+   53           | function_expression
    54           | array_literal
 
    55 lvalue: IDENT
@@ -120,18 +143,7 @@ Grammar
    65 template_part: TEMPLATE_CHUNK
    66              | TEMPLATE_EXPR_START expression RCURLY
 
-   67 object_literal: LCURLY property_list_opt RCURLY
-
-   68 property_list_opt: ε
-   69                  | property_list
-
-   70 property_list: property
-   71              | property_list COMMA property
-
-   72 property: lvalue COLON expression
-   73         | variable COLON expression
-
-   74 array_literal: LBRACKET argument_list_opt RBRACKET
+   67 array_literal: LBRACKET argument_list_opt RBRACKET
 
 
 Terminals, with rules where they appear
@@ -140,27 +152,27 @@ Terminals, with rules where they appear
     error (256)
     FLOAT (258) 58
     NUMBER (259) 57
-    FUNC (260) 6 7
-    ASSIGN (261) 25
-    COLON (262) 72 73
-    LPAR (263) 6 7 22 26 27 46 51
-    RPAR (264) 6 7 22 26 27 46 51
-    LCURLY (265) 6 7 28 67
-    RCURLY (266) 6 7 28 66 67
-    LBRACKET (267) 74
-    RBRACKET (268) 74
-    SEMI (269) 19 20 23 24 25
-    COMMA (270) 12 71
-    RETURN (271) 24
-    IF (272) 26 27
-    ELSE (273) 27
+    FUNC (260) 6 7 8
+    ASSIGN (261) 26
+    COLON (262)
+    LPAR (263) 6 7 8 23 27 28 46 52
+    RPAR (264) 6 7 8 23 27 28 46 52
+    LCURLY (265) 6 7 8 29
+    RCURLY (266) 6 7 8 29 66
+    LBRACKET (267) 67
+    RBRACKET (268) 67
+    SEMI (269) 20 21 24 25 26
+    COMMA (270) 13
+    RETURN (271) 25
+    IF (272) 27 28
+    ELSE (273) 28
     OPERATORS (274)
-    POINT (275) 34 56
-    IDENT (276) 6 20 34 55 56
-    PLUS (277) 29
-    MINUS (278) 30
-    MULT (279) 31
-    DIV (280) 32
+    POINT (275) 35 56
+    IDENT (276) 6 8 21 35 55 56
+    PLUS (277) 30
+    MINUS (278) 31
+    MULT (279) 32
+    DIV (280) 33
     EQUAL (281) 36
     TEQUAL (282) 37
     DIFF (283) 38
@@ -168,16 +180,16 @@ Terminals, with rules where they appear
     MORE (285) 40
     LEQ (286) 41
     MEQ (287) 42
-    REST (288) 33
-    TRUE (289) 49
-    FALSE (290) 50
+    REST (288) 34
+    TRUE (289) 50
+    FALSE (290) 51
     AND (291) 43
     OR (292) 44
     NOT (293) 45
-    TYPE (294) 20 21
+    TYPE (294) 21 22
     WHITESPACE (295)
     COMMENT (296)
-    ARROW (297) 51
+    ARROW (297) 52
     STRING_LITERAL (298) 59
     STRING_SINGLE_QUOTE (299) 60
     TEMPLATE_START (300) 62
@@ -195,7 +207,7 @@ Nonterminals, with rules where they appear
         on right: 0
     statement_list (51)
         on left: 2 3
-        on right: 1 3 6 7 28
+        on right: 1 3 6 7 8 29
     statement (52)
         on left: 4 5
         on right: 3
@@ -203,50 +215,50 @@ Nonterminals, with rules where they appear
         on left: 6
         on right: 4
     function_expression (54)
-        on left: 7
-        on right: 52
+        on left: 7 8
+        on right: 53
     arguments (55)
-        on left: 8
-        on right: 6 7 22 51
+        on left: 9
+        on right: 6 7 8 23 52
     argument_list_opt (56)
-        on left: 9 10
-        on right: 8 74
+        on left: 10 11
+        on right: 9 67
     argument_list (57)
-        on left: 11 12
-        on right: 10 12
+        on left: 12 13
+        on right: 11 13
     command (58)
-        on left: 13 14 15 16 17 18 19
-        on right: 5 26 27
+        on left: 14 15 16 17 18 19 20
+        on right: 5 27 28
     variableDeclaration (59)
-        on left: 20 21
-        on right: 18
+        on left: 21 22
+        on right: 19
     method_call_expr (60)
-        on left: 22
-        on right: 23 47
-    method_call (61)
         on left: 23
-        on right: 15
-    returnStmt (62)
+        on right: 24 47
+    method_call (61)
         on left: 24
         on right: 16
-    assignment (63)
+    returnStmt (62)
         on left: 25
-        on right: 13 21
-    conditional (64)
-        on left: 26 27
-        on right: 14
-    block (65)
-        on left: 28
         on right: 17
+    assignment (63)
+        on left: 26
+        on right: 14 22
+    conditional (64)
+        on left: 27 28
+        on right: 15
+    block (65)
+        on left: 29
+        on right: 18
     expression (66)
-        on left: 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54
-        on right: 11 12 22 24 25 26 27 29 30 31 32 33 34 36 37 38 39 40 41 42 43 44 45 46 51 66 72 73
+        on left: 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54
+        on right: 12 13 23 25 26 27 28 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 52 66
     lvalue (67)
         on left: 55 56
-        on right: 25 35 56 72
+        on right: 26 49 56
     variable (68)
         on left: 57 58 59 60 61
-        on right: 48 73
+        on right: 48
     template_literal (69)
         on left: 62
         on right: 61
@@ -256,20 +268,8 @@ Nonterminals, with rules where they appear
     template_part (71)
         on left: 65 66
         on right: 64
-    object_literal (72)
+    array_literal (72)
         on left: 67
-        on right: 53
-    property_list_opt (73)
-        on left: 68 69
-        on right: 67
-    property_list (74)
-        on left: 70 71
-        on right: 69 71
-    property (75)
-        on left: 72 73
-        on right: 70 71
-    array_literal (76)
-        on left: 74
         on right: 54
 
 
@@ -330,8 +330,7 @@ State 2
     lvalue               go to state 33
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
 
 
 State 3
@@ -359,21 +358,21 @@ State 6
 
     6 function: FUNC • IDENT LPAR arguments RPAR LCURLY statement_list RCURLY
     7 function_expression: FUNC • LPAR arguments RPAR LCURLY statement_list RCURLY
+    8                    | FUNC • IDENT LPAR arguments RPAR LCURLY statement_list RCURLY
 
-    LPAR   shift, and go to state 38
-    IDENT  shift, and go to state 39
+    LPAR   shift, and go to state 37
+    IDENT  shift, and go to state 38
 
 
 State 7
 
    46 expression: LPAR • expression RPAR
-   51           | LPAR • arguments RPAR ARROW expression
+   52           | LPAR • arguments RPAR ARROW expression
 
     FLOAT                shift, and go to state 4
     NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
+    FUNC                 shift, and go to state 39
     LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
     LBRACKET             shift, and go to state 9
     IDENT                shift, and go to state 13
     TRUE                 shift, and go to state 14
@@ -383,61 +382,37 @@ State 7
     STRING_SINGLE_QUOTE  shift, and go to state 19
     TEMPLATE_START       shift, and go to state 20
 
-    $default  reduce using rule 9 (argument_list_opt)
+    $default  reduce using rule 10 (argument_list_opt)
 
     function_expression  go to state 23
-    arguments            go to state 42
-    argument_list_opt    go to state 43
-    argument_list        go to state 44
-    method_call_expr     go to state 45
-    expression           go to state 46
-    lvalue               go to state 47
+    arguments            go to state 40
+    argument_list_opt    go to state 41
+    argument_list        go to state 42
+    method_call_expr     go to state 43
+    expression           go to state 44
+    lvalue               go to state 45
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
 
 
 State 8
 
-   28 block: LCURLY • statement_list RCURLY
-   67 object_literal: LCURLY • property_list_opt RCURLY
+   29 block: LCURLY • statement_list RCURLY
 
-    FLOAT                shift, and go to state 4
-    NUMBER               shift, and go to state 5
-    IDENT                shift, and go to state 13
-    STRING_LITERAL       shift, and go to state 18
-    STRING_SINGLE_QUOTE  shift, and go to state 19
-    TEMPLATE_START       shift, and go to state 20
+    $default  reduce using rule 2 (statement_list)
 
-    FLOAT                [reduce using rule 2 (statement_list)]
-    NUMBER               [reduce using rule 2 (statement_list)]
-    RCURLY               reduce using rule 2 (statement_list)
-    RCURLY               [reduce using rule 68 (property_list_opt)]
-    IDENT                [reduce using rule 2 (statement_list)]
-    STRING_LITERAL       [reduce using rule 2 (statement_list)]
-    STRING_SINGLE_QUOTE  [reduce using rule 2 (statement_list)]
-    TEMPLATE_START       [reduce using rule 2 (statement_list)]
-    $default             reduce using rule 2 (statement_list)
-
-    statement_list     go to state 48
-    lvalue             go to state 49
-    variable           go to state 50
-    template_literal   go to state 35
-    property_list_opt  go to state 51
-    property_list      go to state 52
-    property           go to state 53
+    statement_list  go to state 46
 
 
 State 9
 
-   74 array_literal: LBRACKET • argument_list_opt RBRACKET
+   67 array_literal: LBRACKET • argument_list_opt RBRACKET
 
     FLOAT                shift, and go to state 4
     NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
+    FUNC                 shift, and go to state 39
     LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
     LBRACKET             shift, and go to state 9
     IDENT                shift, and go to state 13
     TRUE                 shift, and go to state 14
@@ -447,36 +422,34 @@ State 9
     STRING_SINGLE_QUOTE  shift, and go to state 19
     TEMPLATE_START       shift, and go to state 20
 
-    $default  reduce using rule 9 (argument_list_opt)
+    $default  reduce using rule 10 (argument_list_opt)
 
     function_expression  go to state 23
-    argument_list_opt    go to state 54
-    argument_list        go to state 44
-    method_call_expr     go to state 45
-    expression           go to state 55
-    lvalue               go to state 47
+    argument_list_opt    go to state 47
+    argument_list        go to state 42
+    method_call_expr     go to state 43
+    expression           go to state 48
+    lvalue               go to state 45
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
 
 
 State 10
 
-   19 command: SEMI •
+   20 command: SEMI •
 
-    $default  reduce using rule 19 (command)
+    $default  reduce using rule 20 (command)
 
 
 State 11
 
-   24 returnStmt: RETURN • expression SEMI
+   25 returnStmt: RETURN • expression SEMI
 
     FLOAT                shift, and go to state 4
     NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
+    FUNC                 shift, and go to state 39
     LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
     LBRACKET             shift, and go to state 9
     IDENT                shift, and go to state 13
     TRUE                 shift, and go to state 14
@@ -487,21 +460,20 @@ State 11
     TEMPLATE_START       shift, and go to state 20
 
     function_expression  go to state 23
-    method_call_expr     go to state 45
-    expression           go to state 56
-    lvalue               go to state 47
+    method_call_expr     go to state 43
+    expression           go to state 49
+    lvalue               go to state 45
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
 
 
 State 12
 
-   26 conditional: IF • LPAR expression RPAR command
-   27            | IF • LPAR expression RPAR command ELSE command
+   27 conditional: IF • LPAR expression RPAR command
+   28            | IF • LPAR expression RPAR command ELSE command
 
-    LPAR  shift, and go to state 57
+    LPAR  shift, and go to state 50
 
 
 State 13
@@ -513,16 +485,16 @@ State 13
 
 State 14
 
-   49 expression: TRUE •
+   50 expression: TRUE •
 
-    $default  reduce using rule 49 (expression)
+    $default  reduce using rule 50 (expression)
 
 
 State 15
 
-   50 expression: FALSE •
+   51 expression: FALSE •
 
-    $default  reduce using rule 50 (expression)
+    $default  reduce using rule 51 (expression)
 
 
 State 16
@@ -531,9 +503,8 @@ State 16
 
     FLOAT                shift, and go to state 4
     NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
+    FUNC                 shift, and go to state 39
     LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
     LBRACKET             shift, and go to state 9
     IDENT                shift, and go to state 13
     TRUE                 shift, and go to state 14
@@ -544,24 +515,23 @@ State 16
     TEMPLATE_START       shift, and go to state 20
 
     function_expression  go to state 23
-    method_call_expr     go to state 45
-    expression           go to state 58
-    lvalue               go to state 47
+    method_call_expr     go to state 43
+    expression           go to state 51
+    lvalue               go to state 45
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
 
 
 State 17
 
-   20 variableDeclaration: TYPE • IDENT SEMI
-   21                    | TYPE • assignment
+   21 variableDeclaration: TYPE • IDENT SEMI
+   22                    | TYPE • assignment
 
-    IDENT  shift, and go to state 59
+    IDENT  shift, and go to state 52
 
-    assignment  go to state 60
-    lvalue      go to state 61
+    assignment  go to state 53
+    lvalue      go to state 54
 
 
 State 18
@@ -584,7 +554,7 @@ State 20
 
     $default  reduce using rule 63 (template_body)
 
-    template_body  go to state 62
+    template_body  go to state 55
 
 
 State 21
@@ -603,9 +573,9 @@ State 22
 
 State 23
 
-   52 expression: function_expression •
+   53 expression: function_expression •
 
-    $default  reduce using rule 52 (expression)
+    $default  reduce using rule 53 (expression)
 
 
 State 24
@@ -617,65 +587,65 @@ State 24
 
 State 25
 
-   18 command: variableDeclaration •
+   19 command: variableDeclaration •
 
-    $default  reduce using rule 18 (command)
+    $default  reduce using rule 19 (command)
 
 
 State 26
 
-   23 method_call: method_call_expr • SEMI
+   24 method_call: method_call_expr • SEMI
    47 expression: method_call_expr •
 
-    SEMI  shift, and go to state 63
+    SEMI  shift, and go to state 56
 
     $default  reduce using rule 47 (expression)
 
 
 State 27
 
-   15 command: method_call •
-
-    $default  reduce using rule 15 (command)
-
-
-State 28
-
-   16 command: returnStmt •
+   16 command: method_call •
 
     $default  reduce using rule 16 (command)
 
 
-State 29
+State 28
 
-   13 command: assignment •
-
-    $default  reduce using rule 13 (command)
-
-
-State 30
-
-   14 command: conditional •
-
-    $default  reduce using rule 14 (command)
-
-
-State 31
-
-   17 command: block •
+   17 command: returnStmt •
 
     $default  reduce using rule 17 (command)
 
 
+State 29
+
+   14 command: assignment •
+
+    $default  reduce using rule 14 (command)
+
+
+State 30
+
+   15 command: conditional •
+
+    $default  reduce using rule 15 (command)
+
+
+State 31
+
+   18 command: block •
+
+    $default  reduce using rule 18 (command)
+
+
 State 32
 
-   22 method_call_expr: expression • LPAR arguments RPAR
-   29 expression: expression • PLUS expression
-   30           | expression • MINUS expression
-   31           | expression • MULT expression
-   32           | expression • DIV expression
-   33           | expression • REST expression
-   34           | expression • POINT IDENT
+   23 method_call_expr: expression • LPAR arguments RPAR
+   30 expression: expression • PLUS expression
+   31           | expression • MINUS expression
+   32           | expression • MULT expression
+   33           | expression • DIV expression
+   34           | expression • REST expression
+   35           | expression • POINT IDENT
    36           | expression • EQUAL expression
    37           | expression • TEQUAL expression
    38           | expression • DIFF expression
@@ -686,35 +656,35 @@ State 32
    43           | expression • AND expression
    44           | expression • OR expression
 
-    LPAR    shift, and go to state 64
-    POINT   shift, and go to state 65
-    PLUS    shift, and go to state 66
-    MINUS   shift, and go to state 67
-    MULT    shift, and go to state 68
-    DIV     shift, and go to state 69
-    EQUAL   shift, and go to state 70
-    TEQUAL  shift, and go to state 71
-    DIFF    shift, and go to state 72
-    LESS    shift, and go to state 73
-    MORE    shift, and go to state 74
-    LEQ     shift, and go to state 75
-    MEQ     shift, and go to state 76
-    REST    shift, and go to state 77
-    AND     shift, and go to state 78
-    OR      shift, and go to state 79
+    LPAR    shift, and go to state 57
+    POINT   shift, and go to state 58
+    PLUS    shift, and go to state 59
+    MINUS   shift, and go to state 60
+    MULT    shift, and go to state 61
+    DIV     shift, and go to state 62
+    EQUAL   shift, and go to state 63
+    TEQUAL  shift, and go to state 64
+    DIFF    shift, and go to state 65
+    LESS    shift, and go to state 66
+    MORE    shift, and go to state 67
+    LEQ     shift, and go to state 68
+    MEQ     shift, and go to state 69
+    REST    shift, and go to state 70
+    AND     shift, and go to state 71
+    OR      shift, and go to state 72
 
 
 State 33
 
-   25 assignment: lvalue • ASSIGN expression SEMI
-   35 expression: lvalue •
+   26 assignment: lvalue • ASSIGN expression SEMI
+   49 expression: lvalue •
    56 lvalue: lvalue • POINT IDENT
 
-    ASSIGN  shift, and go to state 80
-    POINT   shift, and go to state 81
+    ASSIGN  shift, and go to state 73
+    POINT   shift, and go to state 74
 
-    POINT     [reduce using rule 35 (expression)]
-    $default  reduce using rule 35 (expression)
+    POINT     [reduce using rule 49 (expression)]
+    $default  reduce using rule 49 (expression)
 
 
 State 34
@@ -733,27 +703,19 @@ State 35
 
 State 36
 
-   53 expression: object_literal •
-
-    $default  reduce using rule 53 (expression)
-
-
-State 37
-
    54 expression: array_literal •
 
     $default  reduce using rule 54 (expression)
 
 
-State 38
+State 37
 
     7 function_expression: FUNC LPAR • arguments RPAR LCURLY statement_list RCURLY
 
     FLOAT                shift, and go to state 4
     NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
+    FUNC                 shift, and go to state 39
     LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
     LBRACKET             shift, and go to state 9
     IDENT                shift, and go to state 13
     TRUE                 shift, and go to state 14
@@ -763,97 +725,78 @@ State 38
     STRING_SINGLE_QUOTE  shift, and go to state 19
     TEMPLATE_START       shift, and go to state 20
 
-    $default  reduce using rule 9 (argument_list_opt)
+    $default  reduce using rule 10 (argument_list_opt)
 
     function_expression  go to state 23
-    arguments            go to state 82
-    argument_list_opt    go to state 43
-    argument_list        go to state 44
-    method_call_expr     go to state 45
-    expression           go to state 55
-    lvalue               go to state 47
+    arguments            go to state 75
+    argument_list_opt    go to state 41
+    argument_list        go to state 42
+    method_call_expr     go to state 43
+    expression           go to state 48
+    lvalue               go to state 45
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
+
+
+State 38
+
+    6 function: FUNC IDENT • LPAR arguments RPAR LCURLY statement_list RCURLY
+    8 function_expression: FUNC IDENT • LPAR arguments RPAR LCURLY statement_list RCURLY
+
+    LPAR  shift, and go to state 76
 
 
 State 39
 
-    6 function: FUNC IDENT • LPAR arguments RPAR LCURLY statement_list RCURLY
+    7 function_expression: FUNC • LPAR arguments RPAR LCURLY statement_list RCURLY
+    8                    | FUNC • IDENT LPAR arguments RPAR LCURLY statement_list RCURLY
 
-    LPAR  shift, and go to state 83
+    LPAR   shift, and go to state 37
+    IDENT  shift, and go to state 77
 
 
 State 40
 
-    7 function_expression: FUNC • LPAR arguments RPAR LCURLY statement_list RCURLY
+   52 expression: LPAR arguments • RPAR ARROW expression
 
-    LPAR  shift, and go to state 38
+    RPAR  shift, and go to state 78
 
 
 State 41
 
-   67 object_literal: LCURLY • property_list_opt RCURLY
+    9 arguments: argument_list_opt •
 
-    FLOAT                shift, and go to state 4
-    NUMBER               shift, and go to state 5
-    IDENT                shift, and go to state 13
-    STRING_LITERAL       shift, and go to state 18
-    STRING_SINGLE_QUOTE  shift, and go to state 19
-    TEMPLATE_START       shift, and go to state 20
-
-    $default  reduce using rule 68 (property_list_opt)
-
-    lvalue             go to state 49
-    variable           go to state 50
-    template_literal   go to state 35
-    property_list_opt  go to state 51
-    property_list      go to state 52
-    property           go to state 53
+    $default  reduce using rule 9 (arguments)
 
 
 State 42
 
-   51 expression: LPAR arguments • RPAR ARROW expression
+   11 argument_list_opt: argument_list •
+   13 argument_list: argument_list • COMMA expression
 
-    RPAR  shift, and go to state 84
+    COMMA  shift, and go to state 79
+
+    $default  reduce using rule 11 (argument_list_opt)
 
 
 State 43
-
-    8 arguments: argument_list_opt •
-
-    $default  reduce using rule 8 (arguments)
-
-
-State 44
-
-   10 argument_list_opt: argument_list •
-   12 argument_list: argument_list • COMMA expression
-
-    COMMA  shift, and go to state 85
-
-    $default  reduce using rule 10 (argument_list_opt)
-
-
-State 45
 
    47 expression: method_call_expr •
 
     $default  reduce using rule 47 (expression)
 
 
-State 46
+State 44
 
-   11 argument_list: expression •
-   22 method_call_expr: expression • LPAR arguments RPAR
-   29 expression: expression • PLUS expression
-   30           | expression • MINUS expression
-   31           | expression • MULT expression
-   32           | expression • DIV expression
-   33           | expression • REST expression
-   34           | expression • POINT IDENT
+   12 argument_list: expression •
+   23 method_call_expr: expression • LPAR arguments RPAR
+   30 expression: expression • PLUS expression
+   31           | expression • MINUS expression
+   32           | expression • MULT expression
+   33           | expression • DIV expression
+   34           | expression • REST expression
+   35           | expression • POINT IDENT
    36           | expression • EQUAL expression
    37           | expression • TEQUAL expression
    38           | expression • DIFF expression
@@ -865,50 +808,50 @@ State 46
    44           | expression • OR expression
    46           | LPAR expression • RPAR
 
-    LPAR    shift, and go to state 64
-    RPAR    shift, and go to state 86
-    POINT   shift, and go to state 65
-    PLUS    shift, and go to state 66
-    MINUS   shift, and go to state 67
-    MULT    shift, and go to state 68
-    DIV     shift, and go to state 69
-    EQUAL   shift, and go to state 70
-    TEQUAL  shift, and go to state 71
-    DIFF    shift, and go to state 72
-    LESS    shift, and go to state 73
-    MORE    shift, and go to state 74
-    LEQ     shift, and go to state 75
-    MEQ     shift, and go to state 76
-    REST    shift, and go to state 77
-    AND     shift, and go to state 78
-    OR      shift, and go to state 79
+    LPAR    shift, and go to state 57
+    RPAR    shift, and go to state 80
+    POINT   shift, and go to state 58
+    PLUS    shift, and go to state 59
+    MINUS   shift, and go to state 60
+    MULT    shift, and go to state 61
+    DIV     shift, and go to state 62
+    EQUAL   shift, and go to state 63
+    TEQUAL  shift, and go to state 64
+    DIFF    shift, and go to state 65
+    LESS    shift, and go to state 66
+    MORE    shift, and go to state 67
+    LEQ     shift, and go to state 68
+    MEQ     shift, and go to state 69
+    REST    shift, and go to state 70
+    AND     shift, and go to state 71
+    OR      shift, and go to state 72
 
-    RPAR      [reduce using rule 11 (argument_list)]
-    $default  reduce using rule 11 (argument_list)
+    RPAR      [reduce using rule 12 (argument_list)]
+    $default  reduce using rule 12 (argument_list)
 
 
-State 47
+State 45
 
-   35 expression: lvalue •
+   49 expression: lvalue •
    56 lvalue: lvalue • POINT IDENT
 
-    POINT  shift, and go to state 81
+    POINT  shift, and go to state 74
 
-    POINT     [reduce using rule 35 (expression)]
-    $default  reduce using rule 35 (expression)
+    POINT     [reduce using rule 49 (expression)]
+    $default  reduce using rule 49 (expression)
 
 
-State 48
+State 46
 
     3 statement_list: statement_list • statement
-   28 block: LCURLY statement_list • RCURLY
+   29 block: LCURLY statement_list • RCURLY
 
     FLOAT                shift, and go to state 4
     NUMBER               shift, and go to state 5
     FUNC                 shift, and go to state 6
     LPAR                 shift, and go to state 7
     LCURLY               shift, and go to state 8
-    RCURLY               shift, and go to state 87
+    RCURLY               shift, and go to state 81
     LBRACKET             shift, and go to state 9
     SEMI                 shift, and go to state 10
     RETURN               shift, and go to state 11
@@ -937,146 +880,104 @@ State 48
     lvalue               go to state 33
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
+
+
+State 47
+
+   67 array_literal: LBRACKET argument_list_opt • RBRACKET
+
+    RBRACKET  shift, and go to state 82
+
+
+State 48
+
+   12 argument_list: expression •
+   23 method_call_expr: expression • LPAR arguments RPAR
+   30 expression: expression • PLUS expression
+   31           | expression • MINUS expression
+   32           | expression • MULT expression
+   33           | expression • DIV expression
+   34           | expression • REST expression
+   35           | expression • POINT IDENT
+   36           | expression • EQUAL expression
+   37           | expression • TEQUAL expression
+   38           | expression • DIFF expression
+   39           | expression • LESS expression
+   40           | expression • MORE expression
+   41           | expression • LEQ expression
+   42           | expression • MEQ expression
+   43           | expression • AND expression
+   44           | expression • OR expression
+
+    LPAR    shift, and go to state 57
+    POINT   shift, and go to state 58
+    PLUS    shift, and go to state 59
+    MINUS   shift, and go to state 60
+    MULT    shift, and go to state 61
+    DIV     shift, and go to state 62
+    EQUAL   shift, and go to state 63
+    TEQUAL  shift, and go to state 64
+    DIFF    shift, and go to state 65
+    LESS    shift, and go to state 66
+    MORE    shift, and go to state 67
+    LEQ     shift, and go to state 68
+    MEQ     shift, and go to state 69
+    REST    shift, and go to state 70
+    AND     shift, and go to state 71
+    OR      shift, and go to state 72
+
+    $default  reduce using rule 12 (argument_list)
 
 
 State 49
 
-   56 lvalue: lvalue • POINT IDENT
-   72 property: lvalue • COLON expression
+   23 method_call_expr: expression • LPAR arguments RPAR
+   25 returnStmt: RETURN expression • SEMI
+   30 expression: expression • PLUS expression
+   31           | expression • MINUS expression
+   32           | expression • MULT expression
+   33           | expression • DIV expression
+   34           | expression • REST expression
+   35           | expression • POINT IDENT
+   36           | expression • EQUAL expression
+   37           | expression • TEQUAL expression
+   38           | expression • DIFF expression
+   39           | expression • LESS expression
+   40           | expression • MORE expression
+   41           | expression • LEQ expression
+   42           | expression • MEQ expression
+   43           | expression • AND expression
+   44           | expression • OR expression
 
-    COLON  shift, and go to state 88
-    POINT  shift, and go to state 81
+    LPAR    shift, and go to state 57
+    SEMI    shift, and go to state 83
+    POINT   shift, and go to state 58
+    PLUS    shift, and go to state 59
+    MINUS   shift, and go to state 60
+    MULT    shift, and go to state 61
+    DIV     shift, and go to state 62
+    EQUAL   shift, and go to state 63
+    TEQUAL  shift, and go to state 64
+    DIFF    shift, and go to state 65
+    LESS    shift, and go to state 66
+    MORE    shift, and go to state 67
+    LEQ     shift, and go to state 68
+    MEQ     shift, and go to state 69
+    REST    shift, and go to state 70
+    AND     shift, and go to state 71
+    OR      shift, and go to state 72
 
 
 State 50
 
-   73 property: variable • COLON expression
-
-    COLON  shift, and go to state 89
-
-
-State 51
-
-   67 object_literal: LCURLY property_list_opt • RCURLY
-
-    RCURLY  shift, and go to state 90
-
-
-State 52
-
-   69 property_list_opt: property_list •
-   71 property_list: property_list • COMMA property
-
-    COMMA  shift, and go to state 91
-
-    $default  reduce using rule 69 (property_list_opt)
-
-
-State 53
-
-   70 property_list: property •
-
-    $default  reduce using rule 70 (property_list)
-
-
-State 54
-
-   74 array_literal: LBRACKET argument_list_opt • RBRACKET
-
-    RBRACKET  shift, and go to state 92
-
-
-State 55
-
-   11 argument_list: expression •
-   22 method_call_expr: expression • LPAR arguments RPAR
-   29 expression: expression • PLUS expression
-   30           | expression • MINUS expression
-   31           | expression • MULT expression
-   32           | expression • DIV expression
-   33           | expression • REST expression
-   34           | expression • POINT IDENT
-   36           | expression • EQUAL expression
-   37           | expression • TEQUAL expression
-   38           | expression • DIFF expression
-   39           | expression • LESS expression
-   40           | expression • MORE expression
-   41           | expression • LEQ expression
-   42           | expression • MEQ expression
-   43           | expression • AND expression
-   44           | expression • OR expression
-
-    LPAR    shift, and go to state 64
-    POINT   shift, and go to state 65
-    PLUS    shift, and go to state 66
-    MINUS   shift, and go to state 67
-    MULT    shift, and go to state 68
-    DIV     shift, and go to state 69
-    EQUAL   shift, and go to state 70
-    TEQUAL  shift, and go to state 71
-    DIFF    shift, and go to state 72
-    LESS    shift, and go to state 73
-    MORE    shift, and go to state 74
-    LEQ     shift, and go to state 75
-    MEQ     shift, and go to state 76
-    REST    shift, and go to state 77
-    AND     shift, and go to state 78
-    OR      shift, and go to state 79
-
-    $default  reduce using rule 11 (argument_list)
-
-
-State 56
-
-   22 method_call_expr: expression • LPAR arguments RPAR
-   24 returnStmt: RETURN expression • SEMI
-   29 expression: expression • PLUS expression
-   30           | expression • MINUS expression
-   31           | expression • MULT expression
-   32           | expression • DIV expression
-   33           | expression • REST expression
-   34           | expression • POINT IDENT
-   36           | expression • EQUAL expression
-   37           | expression • TEQUAL expression
-   38           | expression • DIFF expression
-   39           | expression • LESS expression
-   40           | expression • MORE expression
-   41           | expression • LEQ expression
-   42           | expression • MEQ expression
-   43           | expression • AND expression
-   44           | expression • OR expression
-
-    LPAR    shift, and go to state 64
-    SEMI    shift, and go to state 93
-    POINT   shift, and go to state 65
-    PLUS    shift, and go to state 66
-    MINUS   shift, and go to state 67
-    MULT    shift, and go to state 68
-    DIV     shift, and go to state 69
-    EQUAL   shift, and go to state 70
-    TEQUAL  shift, and go to state 71
-    DIFF    shift, and go to state 72
-    LESS    shift, and go to state 73
-    MORE    shift, and go to state 74
-    LEQ     shift, and go to state 75
-    MEQ     shift, and go to state 76
-    REST    shift, and go to state 77
-    AND     shift, and go to state 78
-    OR      shift, and go to state 79
-
-
-State 57
-
-   26 conditional: IF LPAR • expression RPAR command
-   27            | IF LPAR • expression RPAR command ELSE command
+   27 conditional: IF LPAR • expression RPAR command
+   28            | IF LPAR • expression RPAR command ELSE command
 
     FLOAT                shift, and go to state 4
     NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
+    FUNC                 shift, and go to state 39
     LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
     LBRACKET             shift, and go to state 9
     IDENT                shift, and go to state 13
     TRUE                 shift, and go to state 14
@@ -1087,24 +988,23 @@ State 57
     TEMPLATE_START       shift, and go to state 20
 
     function_expression  go to state 23
-    method_call_expr     go to state 45
-    expression           go to state 94
-    lvalue               go to state 47
+    method_call_expr     go to state 43
+    expression           go to state 84
+    lvalue               go to state 45
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
 
 
-State 58
+State 51
 
-   22 method_call_expr: expression • LPAR arguments RPAR
-   29 expression: expression • PLUS expression
-   30           | expression • MINUS expression
-   31           | expression • MULT expression
-   32           | expression • DIV expression
-   33           | expression • REST expression
-   34           | expression • POINT IDENT
+   23 method_call_expr: expression • LPAR arguments RPAR
+   30 expression: expression • PLUS expression
+   31           | expression • MINUS expression
+   32           | expression • MULT expression
+   33           | expression • DIV expression
+   34           | expression • REST expression
+   35           | expression • POINT IDENT
    36           | expression • EQUAL expression
    37           | expression • TEQUAL expression
    38           | expression • DIFF expression
@@ -1116,221 +1016,210 @@ State 58
    44           | expression • OR expression
    45           | NOT expression •
 
-    LPAR    shift, and go to state 64
-    POINT   shift, and go to state 65
-    TEQUAL  shift, and go to state 71
+    LPAR    shift, and go to state 57
+    POINT   shift, and go to state 58
+    TEQUAL  shift, and go to state 64
 
     LPAR      [reduce using rule 45 (expression)]
     TEQUAL    [reduce using rule 45 (expression)]
     $default  reduce using rule 45 (expression)
 
 
-State 59
+State 52
 
-   20 variableDeclaration: TYPE IDENT • SEMI
+   21 variableDeclaration: TYPE IDENT • SEMI
    55 lvalue: IDENT •
 
-    SEMI  shift, and go to state 95
+    SEMI  shift, and go to state 85
 
     $default  reduce using rule 55 (lvalue)
 
 
-State 60
+State 53
 
-   21 variableDeclaration: TYPE assignment •
+   22 variableDeclaration: TYPE assignment •
 
-    $default  reduce using rule 21 (variableDeclaration)
+    $default  reduce using rule 22 (variableDeclaration)
 
 
-State 61
+State 54
 
-   25 assignment: lvalue • ASSIGN expression SEMI
+   26 assignment: lvalue • ASSIGN expression SEMI
    56 lvalue: lvalue • POINT IDENT
 
-    ASSIGN  shift, and go to state 80
-    POINT   shift, and go to state 81
+    ASSIGN  shift, and go to state 73
+    POINT   shift, and go to state 74
 
 
-State 62
+State 55
 
    62 template_literal: TEMPLATE_START template_body • TEMPLATE_END
    64 template_body: template_body • template_part
 
-    TEMPLATE_END         shift, and go to state 96
-    TEMPLATE_EXPR_START  shift, and go to state 97
-    TEMPLATE_CHUNK       shift, and go to state 98
+    TEMPLATE_END         shift, and go to state 86
+    TEMPLATE_EXPR_START  shift, and go to state 87
+    TEMPLATE_CHUNK       shift, and go to state 88
 
-    template_part  go to state 99
+    template_part  go to state 89
+
+
+State 56
+
+   24 method_call: method_call_expr SEMI •
+
+    $default  reduce using rule 24 (method_call)
+
+
+State 57
+
+   23 method_call_expr: expression LPAR • arguments RPAR
+
+    FLOAT                shift, and go to state 4
+    NUMBER               shift, and go to state 5
+    FUNC                 shift, and go to state 39
+    LPAR                 shift, and go to state 7
+    LBRACKET             shift, and go to state 9
+    IDENT                shift, and go to state 13
+    TRUE                 shift, and go to state 14
+    FALSE                shift, and go to state 15
+    NOT                  shift, and go to state 16
+    STRING_LITERAL       shift, and go to state 18
+    STRING_SINGLE_QUOTE  shift, and go to state 19
+    TEMPLATE_START       shift, and go to state 20
+
+    $default  reduce using rule 10 (argument_list_opt)
+
+    function_expression  go to state 23
+    arguments            go to state 90
+    argument_list_opt    go to state 41
+    argument_list        go to state 42
+    method_call_expr     go to state 43
+    expression           go to state 48
+    lvalue               go to state 45
+    variable             go to state 34
+    template_literal     go to state 35
+    array_literal        go to state 36
+
+
+State 58
+
+   35 expression: expression POINT • IDENT
+
+    IDENT  shift, and go to state 91
+
+
+State 59
+
+   30 expression: expression PLUS • expression
+
+    FLOAT                shift, and go to state 4
+    NUMBER               shift, and go to state 5
+    FUNC                 shift, and go to state 39
+    LPAR                 shift, and go to state 7
+    LBRACKET             shift, and go to state 9
+    IDENT                shift, and go to state 13
+    TRUE                 shift, and go to state 14
+    FALSE                shift, and go to state 15
+    NOT                  shift, and go to state 16
+    STRING_LITERAL       shift, and go to state 18
+    STRING_SINGLE_QUOTE  shift, and go to state 19
+    TEMPLATE_START       shift, and go to state 20
+
+    function_expression  go to state 23
+    method_call_expr     go to state 43
+    expression           go to state 92
+    lvalue               go to state 45
+    variable             go to state 34
+    template_literal     go to state 35
+    array_literal        go to state 36
+
+
+State 60
+
+   31 expression: expression MINUS • expression
+
+    FLOAT                shift, and go to state 4
+    NUMBER               shift, and go to state 5
+    FUNC                 shift, and go to state 39
+    LPAR                 shift, and go to state 7
+    LBRACKET             shift, and go to state 9
+    IDENT                shift, and go to state 13
+    TRUE                 shift, and go to state 14
+    FALSE                shift, and go to state 15
+    NOT                  shift, and go to state 16
+    STRING_LITERAL       shift, and go to state 18
+    STRING_SINGLE_QUOTE  shift, and go to state 19
+    TEMPLATE_START       shift, and go to state 20
+
+    function_expression  go to state 23
+    method_call_expr     go to state 43
+    expression           go to state 93
+    lvalue               go to state 45
+    variable             go to state 34
+    template_literal     go to state 35
+    array_literal        go to state 36
+
+
+State 61
+
+   32 expression: expression MULT • expression
+
+    FLOAT                shift, and go to state 4
+    NUMBER               shift, and go to state 5
+    FUNC                 shift, and go to state 39
+    LPAR                 shift, and go to state 7
+    LBRACKET             shift, and go to state 9
+    IDENT                shift, and go to state 13
+    TRUE                 shift, and go to state 14
+    FALSE                shift, and go to state 15
+    NOT                  shift, and go to state 16
+    STRING_LITERAL       shift, and go to state 18
+    STRING_SINGLE_QUOTE  shift, and go to state 19
+    TEMPLATE_START       shift, and go to state 20
+
+    function_expression  go to state 23
+    method_call_expr     go to state 43
+    expression           go to state 94
+    lvalue               go to state 45
+    variable             go to state 34
+    template_literal     go to state 35
+    array_literal        go to state 36
+
+
+State 62
+
+   33 expression: expression DIV • expression
+
+    FLOAT                shift, and go to state 4
+    NUMBER               shift, and go to state 5
+    FUNC                 shift, and go to state 39
+    LPAR                 shift, and go to state 7
+    LBRACKET             shift, and go to state 9
+    IDENT                shift, and go to state 13
+    TRUE                 shift, and go to state 14
+    FALSE                shift, and go to state 15
+    NOT                  shift, and go to state 16
+    STRING_LITERAL       shift, and go to state 18
+    STRING_SINGLE_QUOTE  shift, and go to state 19
+    TEMPLATE_START       shift, and go to state 20
+
+    function_expression  go to state 23
+    method_call_expr     go to state 43
+    expression           go to state 95
+    lvalue               go to state 45
+    variable             go to state 34
+    template_literal     go to state 35
+    array_literal        go to state 36
 
 
 State 63
-
-   23 method_call: method_call_expr SEMI •
-
-    $default  reduce using rule 23 (method_call)
-
-
-State 64
-
-   22 method_call_expr: expression LPAR • arguments RPAR
-
-    FLOAT                shift, and go to state 4
-    NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
-    LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
-    LBRACKET             shift, and go to state 9
-    IDENT                shift, and go to state 13
-    TRUE                 shift, and go to state 14
-    FALSE                shift, and go to state 15
-    NOT                  shift, and go to state 16
-    STRING_LITERAL       shift, and go to state 18
-    STRING_SINGLE_QUOTE  shift, and go to state 19
-    TEMPLATE_START       shift, and go to state 20
-
-    $default  reduce using rule 9 (argument_list_opt)
-
-    function_expression  go to state 23
-    arguments            go to state 100
-    argument_list_opt    go to state 43
-    argument_list        go to state 44
-    method_call_expr     go to state 45
-    expression           go to state 55
-    lvalue               go to state 47
-    variable             go to state 34
-    template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
-
-
-State 65
-
-   34 expression: expression POINT • IDENT
-
-    IDENT  shift, and go to state 101
-
-
-State 66
-
-   29 expression: expression PLUS • expression
-
-    FLOAT                shift, and go to state 4
-    NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
-    LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
-    LBRACKET             shift, and go to state 9
-    IDENT                shift, and go to state 13
-    TRUE                 shift, and go to state 14
-    FALSE                shift, and go to state 15
-    NOT                  shift, and go to state 16
-    STRING_LITERAL       shift, and go to state 18
-    STRING_SINGLE_QUOTE  shift, and go to state 19
-    TEMPLATE_START       shift, and go to state 20
-
-    function_expression  go to state 23
-    method_call_expr     go to state 45
-    expression           go to state 102
-    lvalue               go to state 47
-    variable             go to state 34
-    template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
-
-
-State 67
-
-   30 expression: expression MINUS • expression
-
-    FLOAT                shift, and go to state 4
-    NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
-    LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
-    LBRACKET             shift, and go to state 9
-    IDENT                shift, and go to state 13
-    TRUE                 shift, and go to state 14
-    FALSE                shift, and go to state 15
-    NOT                  shift, and go to state 16
-    STRING_LITERAL       shift, and go to state 18
-    STRING_SINGLE_QUOTE  shift, and go to state 19
-    TEMPLATE_START       shift, and go to state 20
-
-    function_expression  go to state 23
-    method_call_expr     go to state 45
-    expression           go to state 103
-    lvalue               go to state 47
-    variable             go to state 34
-    template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
-
-
-State 68
-
-   31 expression: expression MULT • expression
-
-    FLOAT                shift, and go to state 4
-    NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
-    LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
-    LBRACKET             shift, and go to state 9
-    IDENT                shift, and go to state 13
-    TRUE                 shift, and go to state 14
-    FALSE                shift, and go to state 15
-    NOT                  shift, and go to state 16
-    STRING_LITERAL       shift, and go to state 18
-    STRING_SINGLE_QUOTE  shift, and go to state 19
-    TEMPLATE_START       shift, and go to state 20
-
-    function_expression  go to state 23
-    method_call_expr     go to state 45
-    expression           go to state 104
-    lvalue               go to state 47
-    variable             go to state 34
-    template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
-
-
-State 69
-
-   32 expression: expression DIV • expression
-
-    FLOAT                shift, and go to state 4
-    NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
-    LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
-    LBRACKET             shift, and go to state 9
-    IDENT                shift, and go to state 13
-    TRUE                 shift, and go to state 14
-    FALSE                shift, and go to state 15
-    NOT                  shift, and go to state 16
-    STRING_LITERAL       shift, and go to state 18
-    STRING_SINGLE_QUOTE  shift, and go to state 19
-    TEMPLATE_START       shift, and go to state 20
-
-    function_expression  go to state 23
-    method_call_expr     go to state 45
-    expression           go to state 105
-    lvalue               go to state 47
-    variable             go to state 34
-    template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
-
-
-State 70
 
    36 expression: expression EQUAL • expression
 
     FLOAT                shift, and go to state 4
     NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
+    FUNC                 shift, and go to state 39
     LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
     LBRACKET             shift, and go to state 9
     IDENT                shift, and go to state 13
     TRUE                 shift, and go to state 14
@@ -1341,24 +1230,22 @@ State 70
     TEMPLATE_START       shift, and go to state 20
 
     function_expression  go to state 23
-    method_call_expr     go to state 45
-    expression           go to state 106
-    lvalue               go to state 47
+    method_call_expr     go to state 43
+    expression           go to state 96
+    lvalue               go to state 45
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
 
 
-State 71
+State 64
 
    37 expression: expression TEQUAL • expression
 
     FLOAT                shift, and go to state 4
     NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
+    FUNC                 shift, and go to state 39
     LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
     LBRACKET             shift, and go to state 9
     IDENT                shift, and go to state 13
     TRUE                 shift, and go to state 14
@@ -1369,24 +1256,22 @@ State 71
     TEMPLATE_START       shift, and go to state 20
 
     function_expression  go to state 23
-    method_call_expr     go to state 45
-    expression           go to state 107
-    lvalue               go to state 47
+    method_call_expr     go to state 43
+    expression           go to state 97
+    lvalue               go to state 45
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
 
 
-State 72
+State 65
 
    38 expression: expression DIFF • expression
 
     FLOAT                shift, and go to state 4
     NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
+    FUNC                 shift, and go to state 39
     LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
     LBRACKET             shift, and go to state 9
     IDENT                shift, and go to state 13
     TRUE                 shift, and go to state 14
@@ -1397,24 +1282,22 @@ State 72
     TEMPLATE_START       shift, and go to state 20
 
     function_expression  go to state 23
-    method_call_expr     go to state 45
-    expression           go to state 108
-    lvalue               go to state 47
+    method_call_expr     go to state 43
+    expression           go to state 98
+    lvalue               go to state 45
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
 
 
-State 73
+State 66
 
    39 expression: expression LESS • expression
 
     FLOAT                shift, and go to state 4
     NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
+    FUNC                 shift, and go to state 39
     LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
     LBRACKET             shift, and go to state 9
     IDENT                shift, and go to state 13
     TRUE                 shift, and go to state 14
@@ -1425,24 +1308,22 @@ State 73
     TEMPLATE_START       shift, and go to state 20
 
     function_expression  go to state 23
-    method_call_expr     go to state 45
-    expression           go to state 109
-    lvalue               go to state 47
+    method_call_expr     go to state 43
+    expression           go to state 99
+    lvalue               go to state 45
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
 
 
-State 74
+State 67
 
    40 expression: expression MORE • expression
 
     FLOAT                shift, and go to state 4
     NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
+    FUNC                 shift, and go to state 39
     LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
     LBRACKET             shift, and go to state 9
     IDENT                shift, and go to state 13
     TRUE                 shift, and go to state 14
@@ -1453,24 +1334,22 @@ State 74
     TEMPLATE_START       shift, and go to state 20
 
     function_expression  go to state 23
-    method_call_expr     go to state 45
-    expression           go to state 110
-    lvalue               go to state 47
+    method_call_expr     go to state 43
+    expression           go to state 100
+    lvalue               go to state 45
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
 
 
-State 75
+State 68
 
    41 expression: expression LEQ • expression
 
     FLOAT                shift, and go to state 4
     NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
+    FUNC                 shift, and go to state 39
     LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
     LBRACKET             shift, and go to state 9
     IDENT                shift, and go to state 13
     TRUE                 shift, and go to state 14
@@ -1481,24 +1360,22 @@ State 75
     TEMPLATE_START       shift, and go to state 20
 
     function_expression  go to state 23
-    method_call_expr     go to state 45
-    expression           go to state 111
-    lvalue               go to state 47
+    method_call_expr     go to state 43
+    expression           go to state 101
+    lvalue               go to state 45
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
 
 
-State 76
+State 69
 
    42 expression: expression MEQ • expression
 
     FLOAT                shift, and go to state 4
     NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
+    FUNC                 shift, and go to state 39
     LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
     LBRACKET             shift, and go to state 9
     IDENT                shift, and go to state 13
     TRUE                 shift, and go to state 14
@@ -1509,24 +1386,22 @@ State 76
     TEMPLATE_START       shift, and go to state 20
 
     function_expression  go to state 23
-    method_call_expr     go to state 45
-    expression           go to state 112
-    lvalue               go to state 47
+    method_call_expr     go to state 43
+    expression           go to state 102
+    lvalue               go to state 45
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
 
 
-State 77
+State 70
 
-   33 expression: expression REST • expression
+   34 expression: expression REST • expression
 
     FLOAT                shift, and go to state 4
     NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
+    FUNC                 shift, and go to state 39
     LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
     LBRACKET             shift, and go to state 9
     IDENT                shift, and go to state 13
     TRUE                 shift, and go to state 14
@@ -1537,24 +1412,22 @@ State 77
     TEMPLATE_START       shift, and go to state 20
 
     function_expression  go to state 23
-    method_call_expr     go to state 45
-    expression           go to state 113
-    lvalue               go to state 47
+    method_call_expr     go to state 43
+    expression           go to state 103
+    lvalue               go to state 45
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
 
 
-State 78
+State 71
 
    43 expression: expression AND • expression
 
     FLOAT                shift, and go to state 4
     NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
+    FUNC                 shift, and go to state 39
     LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
     LBRACKET             shift, and go to state 9
     IDENT                shift, and go to state 13
     TRUE                 shift, and go to state 14
@@ -1565,24 +1438,22 @@ State 78
     TEMPLATE_START       shift, and go to state 20
 
     function_expression  go to state 23
-    method_call_expr     go to state 45
-    expression           go to state 114
-    lvalue               go to state 47
+    method_call_expr     go to state 43
+    expression           go to state 104
+    lvalue               go to state 45
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
 
 
-State 79
+State 72
 
    44 expression: expression OR • expression
 
     FLOAT                shift, and go to state 4
     NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
+    FUNC                 shift, and go to state 39
     LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
     LBRACKET             shift, and go to state 9
     IDENT                shift, and go to state 13
     TRUE                 shift, and go to state 14
@@ -1593,24 +1464,22 @@ State 79
     TEMPLATE_START       shift, and go to state 20
 
     function_expression  go to state 23
-    method_call_expr     go to state 45
-    expression           go to state 115
-    lvalue               go to state 47
+    method_call_expr     go to state 43
+    expression           go to state 105
+    lvalue               go to state 45
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
 
 
-State 80
+State 73
 
-   25 assignment: lvalue ASSIGN • expression SEMI
+   26 assignment: lvalue ASSIGN • expression SEMI
 
     FLOAT                shift, and go to state 4
     NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
+    FUNC                 shift, and go to state 39
     LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
     LBRACKET             shift, and go to state 9
     IDENT                shift, and go to state 13
     TRUE                 shift, and go to state 14
@@ -1621,38 +1490,37 @@ State 80
     TEMPLATE_START       shift, and go to state 20
 
     function_expression  go to state 23
-    method_call_expr     go to state 45
-    expression           go to state 116
-    lvalue               go to state 47
+    method_call_expr     go to state 43
+    expression           go to state 106
+    lvalue               go to state 45
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
 
 
-State 81
+State 74
 
    56 lvalue: lvalue POINT • IDENT
 
-    IDENT  shift, and go to state 117
+    IDENT  shift, and go to state 107
 
 
-State 82
+State 75
 
     7 function_expression: FUNC LPAR arguments • RPAR LCURLY statement_list RCURLY
 
-    RPAR  shift, and go to state 118
+    RPAR  shift, and go to state 108
 
 
-State 83
+State 76
 
     6 function: FUNC IDENT LPAR • arguments RPAR LCURLY statement_list RCURLY
+    8 function_expression: FUNC IDENT LPAR • arguments RPAR LCURLY statement_list RCURLY
 
     FLOAT                shift, and go to state 4
     NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
+    FUNC                 shift, and go to state 39
     LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
     LBRACKET             shift, and go to state 9
     IDENT                shift, and go to state 13
     TRUE                 shift, and go to state 14
@@ -1662,37 +1530,42 @@ State 83
     STRING_SINGLE_QUOTE  shift, and go to state 19
     TEMPLATE_START       shift, and go to state 20
 
-    $default  reduce using rule 9 (argument_list_opt)
+    $default  reduce using rule 10 (argument_list_opt)
 
     function_expression  go to state 23
-    arguments            go to state 119
-    argument_list_opt    go to state 43
-    argument_list        go to state 44
-    method_call_expr     go to state 45
-    expression           go to state 55
-    lvalue               go to state 47
+    arguments            go to state 109
+    argument_list_opt    go to state 41
+    argument_list        go to state 42
+    method_call_expr     go to state 43
+    expression           go to state 48
+    lvalue               go to state 45
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
 
 
-State 84
+State 77
 
-   51 expression: LPAR arguments RPAR • ARROW expression
+    8 function_expression: FUNC IDENT • LPAR arguments RPAR LCURLY statement_list RCURLY
 
-    ARROW  shift, and go to state 120
+    LPAR  shift, and go to state 110
 
 
-State 85
+State 78
 
-   12 argument_list: argument_list COMMA • expression
+   52 expression: LPAR arguments RPAR • ARROW expression
+
+    ARROW  shift, and go to state 111
+
+
+State 79
+
+   13 argument_list: argument_list COMMA • expression
 
     FLOAT                shift, and go to state 4
     NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
+    FUNC                 shift, and go to state 39
     LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
     LBRACKET             shift, and go to state 9
     IDENT                shift, and go to state 13
     TRUE                 shift, and go to state 14
@@ -1703,134 +1576,53 @@ State 85
     TEMPLATE_START       shift, and go to state 20
 
     function_expression  go to state 23
-    method_call_expr     go to state 45
-    expression           go to state 121
-    lvalue               go to state 47
+    method_call_expr     go to state 43
+    expression           go to state 112
+    lvalue               go to state 45
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
 
 
-State 86
+State 80
 
    46 expression: LPAR expression RPAR •
 
     $default  reduce using rule 46 (expression)
 
 
-State 87
+State 81
 
-   28 block: LCURLY statement_list RCURLY •
+   29 block: LCURLY statement_list RCURLY •
 
-    $default  reduce using rule 28 (block)
-
-
-State 88
-
-   72 property: lvalue COLON • expression
-
-    FLOAT                shift, and go to state 4
-    NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
-    LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
-    LBRACKET             shift, and go to state 9
-    IDENT                shift, and go to state 13
-    TRUE                 shift, and go to state 14
-    FALSE                shift, and go to state 15
-    NOT                  shift, and go to state 16
-    STRING_LITERAL       shift, and go to state 18
-    STRING_SINGLE_QUOTE  shift, and go to state 19
-    TEMPLATE_START       shift, and go to state 20
-
-    function_expression  go to state 23
-    method_call_expr     go to state 45
-    expression           go to state 122
-    lvalue               go to state 47
-    variable             go to state 34
-    template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    $default  reduce using rule 29 (block)
 
 
-State 89
+State 82
 
-   73 property: variable COLON • expression
+   67 array_literal: LBRACKET argument_list_opt RBRACKET •
 
-    FLOAT                shift, and go to state 4
-    NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
-    LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
-    LBRACKET             shift, and go to state 9
-    IDENT                shift, and go to state 13
-    TRUE                 shift, and go to state 14
-    FALSE                shift, and go to state 15
-    NOT                  shift, and go to state 16
-    STRING_LITERAL       shift, and go to state 18
-    STRING_SINGLE_QUOTE  shift, and go to state 19
-    TEMPLATE_START       shift, and go to state 20
-
-    function_expression  go to state 23
-    method_call_expr     go to state 45
-    expression           go to state 123
-    lvalue               go to state 47
-    variable             go to state 34
-    template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    $default  reduce using rule 67 (array_literal)
 
 
-State 90
+State 83
 
-   67 object_literal: LCURLY property_list_opt RCURLY •
+   25 returnStmt: RETURN expression SEMI •
 
-    $default  reduce using rule 67 (object_literal)
-
-
-State 91
-
-   71 property_list: property_list COMMA • property
-
-    FLOAT                shift, and go to state 4
-    NUMBER               shift, and go to state 5
-    IDENT                shift, and go to state 13
-    STRING_LITERAL       shift, and go to state 18
-    STRING_SINGLE_QUOTE  shift, and go to state 19
-    TEMPLATE_START       shift, and go to state 20
-
-    lvalue            go to state 49
-    variable          go to state 50
-    template_literal  go to state 35
-    property          go to state 124
+    $default  reduce using rule 25 (returnStmt)
 
 
-State 92
+State 84
 
-   74 array_literal: LBRACKET argument_list_opt RBRACKET •
-
-    $default  reduce using rule 74 (array_literal)
-
-
-State 93
-
-   24 returnStmt: RETURN expression SEMI •
-
-    $default  reduce using rule 24 (returnStmt)
-
-
-State 94
-
-   22 method_call_expr: expression • LPAR arguments RPAR
-   26 conditional: IF LPAR expression • RPAR command
-   27            | IF LPAR expression • RPAR command ELSE command
-   29 expression: expression • PLUS expression
-   30           | expression • MINUS expression
-   31           | expression • MULT expression
-   32           | expression • DIV expression
-   33           | expression • REST expression
-   34           | expression • POINT IDENT
+   23 method_call_expr: expression • LPAR arguments RPAR
+   27 conditional: IF LPAR expression • RPAR command
+   28            | IF LPAR expression • RPAR command ELSE command
+   30 expression: expression • PLUS expression
+   31           | expression • MINUS expression
+   32           | expression • MULT expression
+   33           | expression • DIV expression
+   34           | expression • REST expression
+   35           | expression • POINT IDENT
    36           | expression • EQUAL expression
    37           | expression • TEQUAL expression
    38           | expression • DIFF expression
@@ -1841,48 +1633,47 @@ State 94
    43           | expression • AND expression
    44           | expression • OR expression
 
-    LPAR    shift, and go to state 64
-    RPAR    shift, and go to state 125
-    POINT   shift, and go to state 65
-    PLUS    shift, and go to state 66
-    MINUS   shift, and go to state 67
-    MULT    shift, and go to state 68
-    DIV     shift, and go to state 69
-    EQUAL   shift, and go to state 70
-    TEQUAL  shift, and go to state 71
-    DIFF    shift, and go to state 72
-    LESS    shift, and go to state 73
-    MORE    shift, and go to state 74
-    LEQ     shift, and go to state 75
-    MEQ     shift, and go to state 76
-    REST    shift, and go to state 77
-    AND     shift, and go to state 78
-    OR      shift, and go to state 79
+    LPAR    shift, and go to state 57
+    RPAR    shift, and go to state 113
+    POINT   shift, and go to state 58
+    PLUS    shift, and go to state 59
+    MINUS   shift, and go to state 60
+    MULT    shift, and go to state 61
+    DIV     shift, and go to state 62
+    EQUAL   shift, and go to state 63
+    TEQUAL  shift, and go to state 64
+    DIFF    shift, and go to state 65
+    LESS    shift, and go to state 66
+    MORE    shift, and go to state 67
+    LEQ     shift, and go to state 68
+    MEQ     shift, and go to state 69
+    REST    shift, and go to state 70
+    AND     shift, and go to state 71
+    OR      shift, and go to state 72
 
 
-State 95
+State 85
 
-   20 variableDeclaration: TYPE IDENT SEMI •
+   21 variableDeclaration: TYPE IDENT SEMI •
 
-    $default  reduce using rule 20 (variableDeclaration)
+    $default  reduce using rule 21 (variableDeclaration)
 
 
-State 96
+State 86
 
    62 template_literal: TEMPLATE_START template_body TEMPLATE_END •
 
     $default  reduce using rule 62 (template_literal)
 
 
-State 97
+State 87
 
    66 template_part: TEMPLATE_EXPR_START • expression RCURLY
 
     FLOAT                shift, and go to state 4
     NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
+    FUNC                 shift, and go to state 39
     LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
     LBRACKET             shift, and go to state 9
     IDENT                shift, and go to state 13
     TRUE                 shift, and go to state 14
@@ -1893,53 +1684,52 @@ State 97
     TEMPLATE_START       shift, and go to state 20
 
     function_expression  go to state 23
-    method_call_expr     go to state 45
-    expression           go to state 126
-    lvalue               go to state 47
+    method_call_expr     go to state 43
+    expression           go to state 114
+    lvalue               go to state 45
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
 
 
-State 98
+State 88
 
    65 template_part: TEMPLATE_CHUNK •
 
     $default  reduce using rule 65 (template_part)
 
 
-State 99
+State 89
 
    64 template_body: template_body template_part •
 
     $default  reduce using rule 64 (template_body)
 
 
-State 100
+State 90
 
-   22 method_call_expr: expression LPAR arguments • RPAR
+   23 method_call_expr: expression LPAR arguments • RPAR
 
-    RPAR  shift, and go to state 127
-
-
-State 101
-
-   34 expression: expression POINT IDENT •
-
-    $default  reduce using rule 34 (expression)
+    RPAR  shift, and go to state 115
 
 
-State 102
+State 91
 
-   22 method_call_expr: expression • LPAR arguments RPAR
-   29 expression: expression • PLUS expression
-   29           | expression PLUS expression •
-   30           | expression • MINUS expression
-   31           | expression • MULT expression
-   32           | expression • DIV expression
-   33           | expression • REST expression
-   34           | expression • POINT IDENT
+   35 expression: expression POINT IDENT •
+
+    $default  reduce using rule 35 (expression)
+
+
+State 92
+
+   23 method_call_expr: expression • LPAR arguments RPAR
+   30 expression: expression • PLUS expression
+   30           | expression PLUS expression •
+   31           | expression • MINUS expression
+   32           | expression • MULT expression
+   33           | expression • DIV expression
+   34           | expression • REST expression
+   35           | expression • POINT IDENT
    36           | expression • EQUAL expression
    37           | expression • TEQUAL expression
    38           | expression • DIFF expression
@@ -1950,60 +1740,28 @@ State 102
    43           | expression • AND expression
    44           | expression • OR expression
 
-    LPAR    shift, and go to state 64
-    POINT   shift, and go to state 65
-    MULT    shift, and go to state 68
-    DIV     shift, and go to state 69
-    TEQUAL  shift, and go to state 71
-    REST    shift, and go to state 77
-
-    LPAR      [reduce using rule 29 (expression)]
-    TEQUAL    [reduce using rule 29 (expression)]
-    $default  reduce using rule 29 (expression)
-
-
-State 103
-
-   22 method_call_expr: expression • LPAR arguments RPAR
-   29 expression: expression • PLUS expression
-   30           | expression • MINUS expression
-   30           | expression MINUS expression •
-   31           | expression • MULT expression
-   32           | expression • DIV expression
-   33           | expression • REST expression
-   34           | expression • POINT IDENT
-   36           | expression • EQUAL expression
-   37           | expression • TEQUAL expression
-   38           | expression • DIFF expression
-   39           | expression • LESS expression
-   40           | expression • MORE expression
-   41           | expression • LEQ expression
-   42           | expression • MEQ expression
-   43           | expression • AND expression
-   44           | expression • OR expression
-
-    LPAR    shift, and go to state 64
-    POINT   shift, and go to state 65
-    MULT    shift, and go to state 68
-    DIV     shift, and go to state 69
-    TEQUAL  shift, and go to state 71
-    REST    shift, and go to state 77
+    LPAR    shift, and go to state 57
+    POINT   shift, and go to state 58
+    MULT    shift, and go to state 61
+    DIV     shift, and go to state 62
+    TEQUAL  shift, and go to state 64
+    REST    shift, and go to state 70
 
     LPAR      [reduce using rule 30 (expression)]
     TEQUAL    [reduce using rule 30 (expression)]
     $default  reduce using rule 30 (expression)
 
 
-State 104
+State 93
 
-   22 method_call_expr: expression • LPAR arguments RPAR
-   29 expression: expression • PLUS expression
-   30           | expression • MINUS expression
-   31           | expression • MULT expression
-   31           | expression MULT expression •
-   32           | expression • DIV expression
-   33           | expression • REST expression
-   34           | expression • POINT IDENT
+   23 method_call_expr: expression • LPAR arguments RPAR
+   30 expression: expression • PLUS expression
+   31           | expression • MINUS expression
+   31           | expression MINUS expression •
+   32           | expression • MULT expression
+   33           | expression • DIV expression
+   34           | expression • REST expression
+   35           | expression • POINT IDENT
    36           | expression • EQUAL expression
    37           | expression • TEQUAL expression
    38           | expression • DIFF expression
@@ -2014,25 +1772,28 @@ State 104
    43           | expression • AND expression
    44           | expression • OR expression
 
-    LPAR    shift, and go to state 64
-    POINT   shift, and go to state 65
-    TEQUAL  shift, and go to state 71
+    LPAR    shift, and go to state 57
+    POINT   shift, and go to state 58
+    MULT    shift, and go to state 61
+    DIV     shift, and go to state 62
+    TEQUAL  shift, and go to state 64
+    REST    shift, and go to state 70
 
     LPAR      [reduce using rule 31 (expression)]
     TEQUAL    [reduce using rule 31 (expression)]
     $default  reduce using rule 31 (expression)
 
 
-State 105
+State 94
 
-   22 method_call_expr: expression • LPAR arguments RPAR
-   29 expression: expression • PLUS expression
-   30           | expression • MINUS expression
-   31           | expression • MULT expression
-   32           | expression • DIV expression
-   32           | expression DIV expression •
-   33           | expression • REST expression
-   34           | expression • POINT IDENT
+   23 method_call_expr: expression • LPAR arguments RPAR
+   30 expression: expression • PLUS expression
+   31           | expression • MINUS expression
+   32           | expression • MULT expression
+   32           | expression MULT expression •
+   33           | expression • DIV expression
+   34           | expression • REST expression
+   35           | expression • POINT IDENT
    36           | expression • EQUAL expression
    37           | expression • TEQUAL expression
    38           | expression • DIFF expression
@@ -2043,24 +1804,53 @@ State 105
    43           | expression • AND expression
    44           | expression • OR expression
 
-    LPAR    shift, and go to state 64
-    POINT   shift, and go to state 65
-    TEQUAL  shift, and go to state 71
+    LPAR    shift, and go to state 57
+    POINT   shift, and go to state 58
+    TEQUAL  shift, and go to state 64
 
     LPAR      [reduce using rule 32 (expression)]
     TEQUAL    [reduce using rule 32 (expression)]
     $default  reduce using rule 32 (expression)
 
 
-State 106
+State 95
 
-   22 method_call_expr: expression • LPAR arguments RPAR
-   29 expression: expression • PLUS expression
-   30           | expression • MINUS expression
-   31           | expression • MULT expression
-   32           | expression • DIV expression
-   33           | expression • REST expression
-   34           | expression • POINT IDENT
+   23 method_call_expr: expression • LPAR arguments RPAR
+   30 expression: expression • PLUS expression
+   31           | expression • MINUS expression
+   32           | expression • MULT expression
+   33           | expression • DIV expression
+   33           | expression DIV expression •
+   34           | expression • REST expression
+   35           | expression • POINT IDENT
+   36           | expression • EQUAL expression
+   37           | expression • TEQUAL expression
+   38           | expression • DIFF expression
+   39           | expression • LESS expression
+   40           | expression • MORE expression
+   41           | expression • LEQ expression
+   42           | expression • MEQ expression
+   43           | expression • AND expression
+   44           | expression • OR expression
+
+    LPAR    shift, and go to state 57
+    POINT   shift, and go to state 58
+    TEQUAL  shift, and go to state 64
+
+    LPAR      [reduce using rule 33 (expression)]
+    TEQUAL    [reduce using rule 33 (expression)]
+    $default  reduce using rule 33 (expression)
+
+
+State 96
+
+   23 method_call_expr: expression • LPAR arguments RPAR
+   30 expression: expression • PLUS expression
+   31           | expression • MINUS expression
+   32           | expression • MULT expression
+   33           | expression • DIV expression
+   34           | expression • REST expression
+   35           | expression • POINT IDENT
    36           | expression • EQUAL expression
    36           | expression EQUAL expression •
    37           | expression • TEQUAL expression
@@ -2072,33 +1862,33 @@ State 106
    43           | expression • AND expression
    44           | expression • OR expression
 
-    LPAR    shift, and go to state 64
-    POINT   shift, and go to state 65
-    PLUS    shift, and go to state 66
-    MINUS   shift, and go to state 67
-    MULT    shift, and go to state 68
-    DIV     shift, and go to state 69
-    TEQUAL  shift, and go to state 71
-    LESS    shift, and go to state 73
-    MORE    shift, and go to state 74
-    LEQ     shift, and go to state 75
-    MEQ     shift, and go to state 76
-    REST    shift, and go to state 77
+    LPAR    shift, and go to state 57
+    POINT   shift, and go to state 58
+    PLUS    shift, and go to state 59
+    MINUS   shift, and go to state 60
+    MULT    shift, and go to state 61
+    DIV     shift, and go to state 62
+    TEQUAL  shift, and go to state 64
+    LESS    shift, and go to state 66
+    MORE    shift, and go to state 67
+    LEQ     shift, and go to state 68
+    MEQ     shift, and go to state 69
+    REST    shift, and go to state 70
 
     LPAR      [reduce using rule 36 (expression)]
     TEQUAL    [reduce using rule 36 (expression)]
     $default  reduce using rule 36 (expression)
 
 
-State 107
+State 97
 
-   22 method_call_expr: expression • LPAR arguments RPAR
-   29 expression: expression • PLUS expression
-   30           | expression • MINUS expression
-   31           | expression • MULT expression
-   32           | expression • DIV expression
-   33           | expression • REST expression
-   34           | expression • POINT IDENT
+   23 method_call_expr: expression • LPAR arguments RPAR
+   30 expression: expression • PLUS expression
+   31           | expression • MINUS expression
+   32           | expression • MULT expression
+   33           | expression • DIV expression
+   34           | expression • REST expression
+   35           | expression • POINT IDENT
    36           | expression • EQUAL expression
    37           | expression • TEQUAL expression
    37           | expression TEQUAL expression •
@@ -2110,22 +1900,22 @@ State 107
    43           | expression • AND expression
    44           | expression • OR expression
 
-    LPAR    shift, and go to state 64
-    POINT   shift, and go to state 65
-    PLUS    shift, and go to state 66
-    MINUS   shift, and go to state 67
-    MULT    shift, and go to state 68
-    DIV     shift, and go to state 69
-    EQUAL   shift, and go to state 70
-    TEQUAL  shift, and go to state 71
-    DIFF    shift, and go to state 72
-    LESS    shift, and go to state 73
-    MORE    shift, and go to state 74
-    LEQ     shift, and go to state 75
-    MEQ     shift, and go to state 76
-    REST    shift, and go to state 77
-    AND     shift, and go to state 78
-    OR      shift, and go to state 79
+    LPAR    shift, and go to state 57
+    POINT   shift, and go to state 58
+    PLUS    shift, and go to state 59
+    MINUS   shift, and go to state 60
+    MULT    shift, and go to state 61
+    DIV     shift, and go to state 62
+    EQUAL   shift, and go to state 63
+    TEQUAL  shift, and go to state 64
+    DIFF    shift, and go to state 65
+    LESS    shift, and go to state 66
+    MORE    shift, and go to state 67
+    LEQ     shift, and go to state 68
+    MEQ     shift, and go to state 69
+    REST    shift, and go to state 70
+    AND     shift, and go to state 71
+    OR      shift, and go to state 72
 
     LPAR      [reduce using rule 37 (expression)]
     POINT     [reduce using rule 37 (expression)]
@@ -2146,15 +1936,15 @@ State 107
     $default  reduce using rule 37 (expression)
 
 
-State 108
+State 98
 
-   22 method_call_expr: expression • LPAR arguments RPAR
-   29 expression: expression • PLUS expression
-   30           | expression • MINUS expression
-   31           | expression • MULT expression
-   32           | expression • DIV expression
-   33           | expression • REST expression
-   34           | expression • POINT IDENT
+   23 method_call_expr: expression • LPAR arguments RPAR
+   30 expression: expression • PLUS expression
+   31           | expression • MINUS expression
+   32           | expression • MULT expression
+   33           | expression • DIV expression
+   34           | expression • REST expression
+   35           | expression • POINT IDENT
    36           | expression • EQUAL expression
    37           | expression • TEQUAL expression
    38           | expression • DIFF expression
@@ -2166,33 +1956,33 @@ State 108
    43           | expression • AND expression
    44           | expression • OR expression
 
-    LPAR    shift, and go to state 64
-    POINT   shift, and go to state 65
-    PLUS    shift, and go to state 66
-    MINUS   shift, and go to state 67
-    MULT    shift, and go to state 68
-    DIV     shift, and go to state 69
-    TEQUAL  shift, and go to state 71
-    LESS    shift, and go to state 73
-    MORE    shift, and go to state 74
-    LEQ     shift, and go to state 75
-    MEQ     shift, and go to state 76
-    REST    shift, and go to state 77
+    LPAR    shift, and go to state 57
+    POINT   shift, and go to state 58
+    PLUS    shift, and go to state 59
+    MINUS   shift, and go to state 60
+    MULT    shift, and go to state 61
+    DIV     shift, and go to state 62
+    TEQUAL  shift, and go to state 64
+    LESS    shift, and go to state 66
+    MORE    shift, and go to state 67
+    LEQ     shift, and go to state 68
+    MEQ     shift, and go to state 69
+    REST    shift, and go to state 70
 
     LPAR      [reduce using rule 38 (expression)]
     TEQUAL    [reduce using rule 38 (expression)]
     $default  reduce using rule 38 (expression)
 
 
-State 109
+State 99
 
-   22 method_call_expr: expression • LPAR arguments RPAR
-   29 expression: expression • PLUS expression
-   30           | expression • MINUS expression
-   31           | expression • MULT expression
-   32           | expression • DIV expression
-   33           | expression • REST expression
-   34           | expression • POINT IDENT
+   23 method_call_expr: expression • LPAR arguments RPAR
+   30 expression: expression • PLUS expression
+   31           | expression • MINUS expression
+   32           | expression • MULT expression
+   33           | expression • DIV expression
+   34           | expression • REST expression
+   35           | expression • POINT IDENT
    36           | expression • EQUAL expression
    37           | expression • TEQUAL expression
    38           | expression • DIFF expression
@@ -2204,29 +1994,29 @@ State 109
    43           | expression • AND expression
    44           | expression • OR expression
 
-    LPAR    shift, and go to state 64
-    POINT   shift, and go to state 65
-    PLUS    shift, and go to state 66
-    MINUS   shift, and go to state 67
-    MULT    shift, and go to state 68
-    DIV     shift, and go to state 69
-    TEQUAL  shift, and go to state 71
-    REST    shift, and go to state 77
+    LPAR    shift, and go to state 57
+    POINT   shift, and go to state 58
+    PLUS    shift, and go to state 59
+    MINUS   shift, and go to state 60
+    MULT    shift, and go to state 61
+    DIV     shift, and go to state 62
+    TEQUAL  shift, and go to state 64
+    REST    shift, and go to state 70
 
     LPAR      [reduce using rule 39 (expression)]
     TEQUAL    [reduce using rule 39 (expression)]
     $default  reduce using rule 39 (expression)
 
 
-State 110
+State 100
 
-   22 method_call_expr: expression • LPAR arguments RPAR
-   29 expression: expression • PLUS expression
-   30           | expression • MINUS expression
-   31           | expression • MULT expression
-   32           | expression • DIV expression
-   33           | expression • REST expression
-   34           | expression • POINT IDENT
+   23 method_call_expr: expression • LPAR arguments RPAR
+   30 expression: expression • PLUS expression
+   31           | expression • MINUS expression
+   32           | expression • MULT expression
+   33           | expression • DIV expression
+   34           | expression • REST expression
+   35           | expression • POINT IDENT
    36           | expression • EQUAL expression
    37           | expression • TEQUAL expression
    38           | expression • DIFF expression
@@ -2238,29 +2028,29 @@ State 110
    43           | expression • AND expression
    44           | expression • OR expression
 
-    LPAR    shift, and go to state 64
-    POINT   shift, and go to state 65
-    PLUS    shift, and go to state 66
-    MINUS   shift, and go to state 67
-    MULT    shift, and go to state 68
-    DIV     shift, and go to state 69
-    TEQUAL  shift, and go to state 71
-    REST    shift, and go to state 77
+    LPAR    shift, and go to state 57
+    POINT   shift, and go to state 58
+    PLUS    shift, and go to state 59
+    MINUS   shift, and go to state 60
+    MULT    shift, and go to state 61
+    DIV     shift, and go to state 62
+    TEQUAL  shift, and go to state 64
+    REST    shift, and go to state 70
 
     LPAR      [reduce using rule 40 (expression)]
     TEQUAL    [reduce using rule 40 (expression)]
     $default  reduce using rule 40 (expression)
 
 
-State 111
+State 101
 
-   22 method_call_expr: expression • LPAR arguments RPAR
-   29 expression: expression • PLUS expression
-   30           | expression • MINUS expression
-   31           | expression • MULT expression
-   32           | expression • DIV expression
-   33           | expression • REST expression
-   34           | expression • POINT IDENT
+   23 method_call_expr: expression • LPAR arguments RPAR
+   30 expression: expression • PLUS expression
+   31           | expression • MINUS expression
+   32           | expression • MULT expression
+   33           | expression • DIV expression
+   34           | expression • REST expression
+   35           | expression • POINT IDENT
    36           | expression • EQUAL expression
    37           | expression • TEQUAL expression
    38           | expression • DIFF expression
@@ -2272,29 +2062,29 @@ State 111
    43           | expression • AND expression
    44           | expression • OR expression
 
-    LPAR    shift, and go to state 64
-    POINT   shift, and go to state 65
-    PLUS    shift, and go to state 66
-    MINUS   shift, and go to state 67
-    MULT    shift, and go to state 68
-    DIV     shift, and go to state 69
-    TEQUAL  shift, and go to state 71
-    REST    shift, and go to state 77
+    LPAR    shift, and go to state 57
+    POINT   shift, and go to state 58
+    PLUS    shift, and go to state 59
+    MINUS   shift, and go to state 60
+    MULT    shift, and go to state 61
+    DIV     shift, and go to state 62
+    TEQUAL  shift, and go to state 64
+    REST    shift, and go to state 70
 
     LPAR      [reduce using rule 41 (expression)]
     TEQUAL    [reduce using rule 41 (expression)]
     $default  reduce using rule 41 (expression)
 
 
-State 112
+State 102
 
-   22 method_call_expr: expression • LPAR arguments RPAR
-   29 expression: expression • PLUS expression
-   30           | expression • MINUS expression
-   31           | expression • MULT expression
-   32           | expression • DIV expression
-   33           | expression • REST expression
-   34           | expression • POINT IDENT
+   23 method_call_expr: expression • LPAR arguments RPAR
+   30 expression: expression • PLUS expression
+   31           | expression • MINUS expression
+   32           | expression • MULT expression
+   33           | expression • DIV expression
+   34           | expression • REST expression
+   35           | expression • POINT IDENT
    36           | expression • EQUAL expression
    37           | expression • TEQUAL expression
    38           | expression • DIFF expression
@@ -2306,30 +2096,30 @@ State 112
    43           | expression • AND expression
    44           | expression • OR expression
 
-    LPAR    shift, and go to state 64
-    POINT   shift, and go to state 65
-    PLUS    shift, and go to state 66
-    MINUS   shift, and go to state 67
-    MULT    shift, and go to state 68
-    DIV     shift, and go to state 69
-    TEQUAL  shift, and go to state 71
-    REST    shift, and go to state 77
+    LPAR    shift, and go to state 57
+    POINT   shift, and go to state 58
+    PLUS    shift, and go to state 59
+    MINUS   shift, and go to state 60
+    MULT    shift, and go to state 61
+    DIV     shift, and go to state 62
+    TEQUAL  shift, and go to state 64
+    REST    shift, and go to state 70
 
     LPAR      [reduce using rule 42 (expression)]
     TEQUAL    [reduce using rule 42 (expression)]
     $default  reduce using rule 42 (expression)
 
 
-State 113
+State 103
 
-   22 method_call_expr: expression • LPAR arguments RPAR
-   29 expression: expression • PLUS expression
-   30           | expression • MINUS expression
-   31           | expression • MULT expression
-   32           | expression • DIV expression
-   33           | expression • REST expression
-   33           | expression REST expression •
-   34           | expression • POINT IDENT
+   23 method_call_expr: expression • LPAR arguments RPAR
+   30 expression: expression • PLUS expression
+   31           | expression • MINUS expression
+   32           | expression • MULT expression
+   33           | expression • DIV expression
+   34           | expression • REST expression
+   34           | expression REST expression •
+   35           | expression • POINT IDENT
    36           | expression • EQUAL expression
    37           | expression • TEQUAL expression
    38           | expression • DIFF expression
@@ -2340,24 +2130,24 @@ State 113
    43           | expression • AND expression
    44           | expression • OR expression
 
-    LPAR    shift, and go to state 64
-    POINT   shift, and go to state 65
-    TEQUAL  shift, and go to state 71
+    LPAR    shift, and go to state 57
+    POINT   shift, and go to state 58
+    TEQUAL  shift, and go to state 64
 
-    LPAR      [reduce using rule 33 (expression)]
-    TEQUAL    [reduce using rule 33 (expression)]
-    $default  reduce using rule 33 (expression)
+    LPAR      [reduce using rule 34 (expression)]
+    TEQUAL    [reduce using rule 34 (expression)]
+    $default  reduce using rule 34 (expression)
 
 
-State 114
+State 104
 
-   22 method_call_expr: expression • LPAR arguments RPAR
-   29 expression: expression • PLUS expression
-   30           | expression • MINUS expression
-   31           | expression • MULT expression
-   32           | expression • DIV expression
-   33           | expression • REST expression
-   34           | expression • POINT IDENT
+   23 method_call_expr: expression • LPAR arguments RPAR
+   30 expression: expression • PLUS expression
+   31           | expression • MINUS expression
+   32           | expression • MULT expression
+   33           | expression • DIV expression
+   34           | expression • REST expression
+   35           | expression • POINT IDENT
    36           | expression • EQUAL expression
    37           | expression • TEQUAL expression
    38           | expression • DIFF expression
@@ -2369,35 +2159,35 @@ State 114
    43           | expression AND expression •
    44           | expression • OR expression
 
-    LPAR    shift, and go to state 64
-    POINT   shift, and go to state 65
-    PLUS    shift, and go to state 66
-    MINUS   shift, and go to state 67
-    MULT    shift, and go to state 68
-    DIV     shift, and go to state 69
-    EQUAL   shift, and go to state 70
-    TEQUAL  shift, and go to state 71
-    DIFF    shift, and go to state 72
-    LESS    shift, and go to state 73
-    MORE    shift, and go to state 74
-    LEQ     shift, and go to state 75
-    MEQ     shift, and go to state 76
-    REST    shift, and go to state 77
+    LPAR    shift, and go to state 57
+    POINT   shift, and go to state 58
+    PLUS    shift, and go to state 59
+    MINUS   shift, and go to state 60
+    MULT    shift, and go to state 61
+    DIV     shift, and go to state 62
+    EQUAL   shift, and go to state 63
+    TEQUAL  shift, and go to state 64
+    DIFF    shift, and go to state 65
+    LESS    shift, and go to state 66
+    MORE    shift, and go to state 67
+    LEQ     shift, and go to state 68
+    MEQ     shift, and go to state 69
+    REST    shift, and go to state 70
 
     LPAR      [reduce using rule 43 (expression)]
     TEQUAL    [reduce using rule 43 (expression)]
     $default  reduce using rule 43 (expression)
 
 
-State 115
+State 105
 
-   22 method_call_expr: expression • LPAR arguments RPAR
-   29 expression: expression • PLUS expression
-   30           | expression • MINUS expression
-   31           | expression • MULT expression
-   32           | expression • DIV expression
-   33           | expression • REST expression
-   34           | expression • POINT IDENT
+   23 method_call_expr: expression • LPAR arguments RPAR
+   30 expression: expression • PLUS expression
+   31           | expression • MINUS expression
+   32           | expression • MULT expression
+   33           | expression • DIV expression
+   34           | expression • REST expression
+   35           | expression • POINT IDENT
    36           | expression • EQUAL expression
    37           | expression • TEQUAL expression
    38           | expression • DIFF expression
@@ -2409,37 +2199,37 @@ State 115
    44           | expression • OR expression
    44           | expression OR expression •
 
-    LPAR    shift, and go to state 64
-    POINT   shift, and go to state 65
-    PLUS    shift, and go to state 66
-    MINUS   shift, and go to state 67
-    MULT    shift, and go to state 68
-    DIV     shift, and go to state 69
-    EQUAL   shift, and go to state 70
-    TEQUAL  shift, and go to state 71
-    DIFF    shift, and go to state 72
-    LESS    shift, and go to state 73
-    MORE    shift, and go to state 74
-    LEQ     shift, and go to state 75
-    MEQ     shift, and go to state 76
-    REST    shift, and go to state 77
-    AND     shift, and go to state 78
+    LPAR    shift, and go to state 57
+    POINT   shift, and go to state 58
+    PLUS    shift, and go to state 59
+    MINUS   shift, and go to state 60
+    MULT    shift, and go to state 61
+    DIV     shift, and go to state 62
+    EQUAL   shift, and go to state 63
+    TEQUAL  shift, and go to state 64
+    DIFF    shift, and go to state 65
+    LESS    shift, and go to state 66
+    MORE    shift, and go to state 67
+    LEQ     shift, and go to state 68
+    MEQ     shift, and go to state 69
+    REST    shift, and go to state 70
+    AND     shift, and go to state 71
 
     LPAR      [reduce using rule 44 (expression)]
     TEQUAL    [reduce using rule 44 (expression)]
     $default  reduce using rule 44 (expression)
 
 
-State 116
+State 106
 
-   22 method_call_expr: expression • LPAR arguments RPAR
-   25 assignment: lvalue ASSIGN expression • SEMI
-   29 expression: expression • PLUS expression
-   30           | expression • MINUS expression
-   31           | expression • MULT expression
-   32           | expression • DIV expression
-   33           | expression • REST expression
-   34           | expression • POINT IDENT
+   23 method_call_expr: expression • LPAR arguments RPAR
+   26 assignment: lvalue ASSIGN expression • SEMI
+   30 expression: expression • PLUS expression
+   31           | expression • MINUS expression
+   32           | expression • MULT expression
+   33           | expression • DIV expression
+   34           | expression • REST expression
+   35           | expression • POINT IDENT
    36           | expression • EQUAL expression
    37           | expression • TEQUAL expression
    38           | expression • DIFF expression
@@ -2450,55 +2240,86 @@ State 116
    43           | expression • AND expression
    44           | expression • OR expression
 
-    LPAR    shift, and go to state 64
-    SEMI    shift, and go to state 128
-    POINT   shift, and go to state 65
-    PLUS    shift, and go to state 66
-    MINUS   shift, and go to state 67
-    MULT    shift, and go to state 68
-    DIV     shift, and go to state 69
-    EQUAL   shift, and go to state 70
-    TEQUAL  shift, and go to state 71
-    DIFF    shift, and go to state 72
-    LESS    shift, and go to state 73
-    MORE    shift, and go to state 74
-    LEQ     shift, and go to state 75
-    MEQ     shift, and go to state 76
-    REST    shift, and go to state 77
-    AND     shift, and go to state 78
-    OR      shift, and go to state 79
+    LPAR    shift, and go to state 57
+    SEMI    shift, and go to state 116
+    POINT   shift, and go to state 58
+    PLUS    shift, and go to state 59
+    MINUS   shift, and go to state 60
+    MULT    shift, and go to state 61
+    DIV     shift, and go to state 62
+    EQUAL   shift, and go to state 63
+    TEQUAL  shift, and go to state 64
+    DIFF    shift, and go to state 65
+    LESS    shift, and go to state 66
+    MORE    shift, and go to state 67
+    LEQ     shift, and go to state 68
+    MEQ     shift, and go to state 69
+    REST    shift, and go to state 70
+    AND     shift, and go to state 71
+    OR      shift, and go to state 72
 
 
-State 117
+State 107
 
    56 lvalue: lvalue POINT IDENT •
 
     $default  reduce using rule 56 (lvalue)
 
 
-State 118
+State 108
 
     7 function_expression: FUNC LPAR arguments RPAR • LCURLY statement_list RCURLY
 
-    LCURLY  shift, and go to state 129
+    LCURLY  shift, and go to state 117
 
 
-State 119
+State 109
 
     6 function: FUNC IDENT LPAR arguments • RPAR LCURLY statement_list RCURLY
+    8 function_expression: FUNC IDENT LPAR arguments • RPAR LCURLY statement_list RCURLY
 
-    RPAR  shift, and go to state 130
+    RPAR  shift, and go to state 118
 
 
-State 120
+State 110
 
-   51 expression: LPAR arguments RPAR ARROW • expression
+    8 function_expression: FUNC IDENT LPAR • arguments RPAR LCURLY statement_list RCURLY
 
     FLOAT                shift, and go to state 4
     NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
+    FUNC                 shift, and go to state 39
     LPAR                 shift, and go to state 7
-    LCURLY               shift, and go to state 41
+    LBRACKET             shift, and go to state 9
+    IDENT                shift, and go to state 13
+    TRUE                 shift, and go to state 14
+    FALSE                shift, and go to state 15
+    NOT                  shift, and go to state 16
+    STRING_LITERAL       shift, and go to state 18
+    STRING_SINGLE_QUOTE  shift, and go to state 19
+    TEMPLATE_START       shift, and go to state 20
+
+    $default  reduce using rule 10 (argument_list_opt)
+
+    function_expression  go to state 23
+    arguments            go to state 119
+    argument_list_opt    go to state 41
+    argument_list        go to state 42
+    method_call_expr     go to state 43
+    expression           go to state 48
+    lvalue               go to state 45
+    variable             go to state 34
+    template_literal     go to state 35
+    array_literal        go to state 36
+
+
+State 111
+
+   52 expression: LPAR arguments RPAR ARROW • expression
+
+    FLOAT                shift, and go to state 4
+    NUMBER               shift, and go to state 5
+    FUNC                 shift, and go to state 39
+    LPAR                 shift, and go to state 7
     LBRACKET             shift, and go to state 9
     IDENT                shift, and go to state 13
     TRUE                 shift, and go to state 14
@@ -2509,25 +2330,24 @@ State 120
     TEMPLATE_START       shift, and go to state 20
 
     function_expression  go to state 23
-    method_call_expr     go to state 45
-    expression           go to state 131
-    lvalue               go to state 47
+    method_call_expr     go to state 43
+    expression           go to state 120
+    lvalue               go to state 45
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
 
 
-State 121
+State 112
 
-   12 argument_list: argument_list COMMA expression •
-   22 method_call_expr: expression • LPAR arguments RPAR
-   29 expression: expression • PLUS expression
-   30           | expression • MINUS expression
-   31           | expression • MULT expression
-   32           | expression • DIV expression
-   33           | expression • REST expression
-   34           | expression • POINT IDENT
+   13 argument_list: argument_list COMMA expression •
+   23 method_call_expr: expression • LPAR arguments RPAR
+   30 expression: expression • PLUS expression
+   31           | expression • MINUS expression
+   32           | expression • MULT expression
+   33           | expression • DIV expression
+   34           | expression • REST expression
+   35           | expression • POINT IDENT
    36           | expression • EQUAL expression
    37           | expression • TEQUAL expression
    38           | expression • DIFF expression
@@ -2538,121 +2358,34 @@ State 121
    43           | expression • AND expression
    44           | expression • OR expression
 
-    LPAR    shift, and go to state 64
-    POINT   shift, and go to state 65
-    PLUS    shift, and go to state 66
-    MINUS   shift, and go to state 67
-    MULT    shift, and go to state 68
-    DIV     shift, and go to state 69
-    EQUAL   shift, and go to state 70
-    TEQUAL  shift, and go to state 71
-    DIFF    shift, and go to state 72
-    LESS    shift, and go to state 73
-    MORE    shift, and go to state 74
-    LEQ     shift, and go to state 75
-    MEQ     shift, and go to state 76
-    REST    shift, and go to state 77
-    AND     shift, and go to state 78
-    OR      shift, and go to state 79
+    LPAR    shift, and go to state 57
+    POINT   shift, and go to state 58
+    PLUS    shift, and go to state 59
+    MINUS   shift, and go to state 60
+    MULT    shift, and go to state 61
+    DIV     shift, and go to state 62
+    EQUAL   shift, and go to state 63
+    TEQUAL  shift, and go to state 64
+    DIFF    shift, and go to state 65
+    LESS    shift, and go to state 66
+    MORE    shift, and go to state 67
+    LEQ     shift, and go to state 68
+    MEQ     shift, and go to state 69
+    REST    shift, and go to state 70
+    AND     shift, and go to state 71
+    OR      shift, and go to state 72
 
-    $default  reduce using rule 12 (argument_list)
-
-
-State 122
-
-   22 method_call_expr: expression • LPAR arguments RPAR
-   29 expression: expression • PLUS expression
-   30           | expression • MINUS expression
-   31           | expression • MULT expression
-   32           | expression • DIV expression
-   33           | expression • REST expression
-   34           | expression • POINT IDENT
-   36           | expression • EQUAL expression
-   37           | expression • TEQUAL expression
-   38           | expression • DIFF expression
-   39           | expression • LESS expression
-   40           | expression • MORE expression
-   41           | expression • LEQ expression
-   42           | expression • MEQ expression
-   43           | expression • AND expression
-   44           | expression • OR expression
-   72 property: lvalue COLON expression •
-
-    LPAR    shift, and go to state 64
-    POINT   shift, and go to state 65
-    PLUS    shift, and go to state 66
-    MINUS   shift, and go to state 67
-    MULT    shift, and go to state 68
-    DIV     shift, and go to state 69
-    EQUAL   shift, and go to state 70
-    TEQUAL  shift, and go to state 71
-    DIFF    shift, and go to state 72
-    LESS    shift, and go to state 73
-    MORE    shift, and go to state 74
-    LEQ     shift, and go to state 75
-    MEQ     shift, and go to state 76
-    REST    shift, and go to state 77
-    AND     shift, and go to state 78
-    OR      shift, and go to state 79
-
-    $default  reduce using rule 72 (property)
+    $default  reduce using rule 13 (argument_list)
 
 
-State 123
+State 113
 
-   22 method_call_expr: expression • LPAR arguments RPAR
-   29 expression: expression • PLUS expression
-   30           | expression • MINUS expression
-   31           | expression • MULT expression
-   32           | expression • DIV expression
-   33           | expression • REST expression
-   34           | expression • POINT IDENT
-   36           | expression • EQUAL expression
-   37           | expression • TEQUAL expression
-   38           | expression • DIFF expression
-   39           | expression • LESS expression
-   40           | expression • MORE expression
-   41           | expression • LEQ expression
-   42           | expression • MEQ expression
-   43           | expression • AND expression
-   44           | expression • OR expression
-   73 property: variable COLON expression •
-
-    LPAR    shift, and go to state 64
-    POINT   shift, and go to state 65
-    PLUS    shift, and go to state 66
-    MINUS   shift, and go to state 67
-    MULT    shift, and go to state 68
-    DIV     shift, and go to state 69
-    EQUAL   shift, and go to state 70
-    TEQUAL  shift, and go to state 71
-    DIFF    shift, and go to state 72
-    LESS    shift, and go to state 73
-    MORE    shift, and go to state 74
-    LEQ     shift, and go to state 75
-    MEQ     shift, and go to state 76
-    REST    shift, and go to state 77
-    AND     shift, and go to state 78
-    OR      shift, and go to state 79
-
-    $default  reduce using rule 73 (property)
-
-
-State 124
-
-   71 property_list: property_list COMMA property •
-
-    $default  reduce using rule 71 (property_list)
-
-
-State 125
-
-   26 conditional: IF LPAR expression RPAR • command
-   27            | IF LPAR expression RPAR • command ELSE command
+   27 conditional: IF LPAR expression RPAR • command
+   28            | IF LPAR expression RPAR • command ELSE command
 
     FLOAT                shift, and go to state 4
     NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
+    FUNC                 shift, and go to state 39
     LPAR                 shift, and go to state 7
     LCURLY               shift, and go to state 8
     LBRACKET             shift, and go to state 9
@@ -2669,7 +2402,7 @@ State 125
     TEMPLATE_START       shift, and go to state 20
 
     function_expression  go to state 23
-    command              go to state 132
+    command              go to state 121
     variableDeclaration  go to state 25
     method_call_expr     go to state 26
     method_call          go to state 27
@@ -2681,19 +2414,18 @@ State 125
     lvalue               go to state 33
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
 
 
-State 126
+State 114
 
-   22 method_call_expr: expression • LPAR arguments RPAR
-   29 expression: expression • PLUS expression
-   30           | expression • MINUS expression
-   31           | expression • MULT expression
-   32           | expression • DIV expression
-   33           | expression • REST expression
-   34           | expression • POINT IDENT
+   23 method_call_expr: expression • LPAR arguments RPAR
+   30 expression: expression • PLUS expression
+   31           | expression • MINUS expression
+   32           | expression • MULT expression
+   33           | expression • DIV expression
+   34           | expression • REST expression
+   35           | expression • POINT IDENT
    36           | expression • EQUAL expression
    37           | expression • TEQUAL expression
    38           | expression • DIFF expression
@@ -2705,64 +2437,72 @@ State 126
    44           | expression • OR expression
    66 template_part: TEMPLATE_EXPR_START expression • RCURLY
 
-    LPAR    shift, and go to state 64
-    RCURLY  shift, and go to state 133
-    POINT   shift, and go to state 65
-    PLUS    shift, and go to state 66
-    MINUS   shift, and go to state 67
-    MULT    shift, and go to state 68
-    DIV     shift, and go to state 69
-    EQUAL   shift, and go to state 70
-    TEQUAL  shift, and go to state 71
-    DIFF    shift, and go to state 72
-    LESS    shift, and go to state 73
-    MORE    shift, and go to state 74
-    LEQ     shift, and go to state 75
-    MEQ     shift, and go to state 76
-    REST    shift, and go to state 77
-    AND     shift, and go to state 78
-    OR      shift, and go to state 79
+    LPAR    shift, and go to state 57
+    RCURLY  shift, and go to state 122
+    POINT   shift, and go to state 58
+    PLUS    shift, and go to state 59
+    MINUS   shift, and go to state 60
+    MULT    shift, and go to state 61
+    DIV     shift, and go to state 62
+    EQUAL   shift, and go to state 63
+    TEQUAL  shift, and go to state 64
+    DIFF    shift, and go to state 65
+    LESS    shift, and go to state 66
+    MORE    shift, and go to state 67
+    LEQ     shift, and go to state 68
+    MEQ     shift, and go to state 69
+    REST    shift, and go to state 70
+    AND     shift, and go to state 71
+    OR      shift, and go to state 72
 
 
-State 127
+State 115
 
-   22 method_call_expr: expression LPAR arguments RPAR •
+   23 method_call_expr: expression LPAR arguments RPAR •
 
-    $default  reduce using rule 22 (method_call_expr)
-
-
-State 128
-
-   25 assignment: lvalue ASSIGN expression SEMI •
-
-    $default  reduce using rule 25 (assignment)
+    $default  reduce using rule 23 (method_call_expr)
 
 
-State 129
+State 116
+
+   26 assignment: lvalue ASSIGN expression SEMI •
+
+    $default  reduce using rule 26 (assignment)
+
+
+State 117
 
     7 function_expression: FUNC LPAR arguments RPAR LCURLY • statement_list RCURLY
 
     $default  reduce using rule 2 (statement_list)
 
-    statement_list  go to state 134
+    statement_list  go to state 123
 
 
-State 130
+State 118
 
     6 function: FUNC IDENT LPAR arguments RPAR • LCURLY statement_list RCURLY
+    8 function_expression: FUNC IDENT LPAR arguments RPAR • LCURLY statement_list RCURLY
 
-    LCURLY  shift, and go to state 135
+    LCURLY  shift, and go to state 124
 
 
-State 131
+State 119
 
-   22 method_call_expr: expression • LPAR arguments RPAR
-   29 expression: expression • PLUS expression
-   30           | expression • MINUS expression
-   31           | expression • MULT expression
-   32           | expression • DIV expression
-   33           | expression • REST expression
-   34           | expression • POINT IDENT
+    8 function_expression: FUNC IDENT LPAR arguments • RPAR LCURLY statement_list RCURLY
+
+    RPAR  shift, and go to state 125
+
+
+State 120
+
+   23 method_call_expr: expression • LPAR arguments RPAR
+   30 expression: expression • PLUS expression
+   31           | expression • MINUS expression
+   32           | expression • MULT expression
+   33           | expression • DIV expression
+   34           | expression • REST expression
+   35           | expression • POINT IDENT
    36           | expression • EQUAL expression
    37           | expression • TEQUAL expression
    38           | expression • DIFF expression
@@ -2772,35 +2512,35 @@ State 131
    42           | expression • MEQ expression
    43           | expression • AND expression
    44           | expression • OR expression
-   51           | LPAR arguments RPAR ARROW expression •
+   52           | LPAR arguments RPAR ARROW expression •
 
-    LPAR    shift, and go to state 64
-    TEQUAL  shift, and go to state 71
+    LPAR    shift, and go to state 57
+    TEQUAL  shift, and go to state 64
 
-    LPAR      [reduce using rule 51 (expression)]
-    TEQUAL    [reduce using rule 51 (expression)]
-    $default  reduce using rule 51 (expression)
-
-
-State 132
-
-   26 conditional: IF LPAR expression RPAR command •
-   27            | IF LPAR expression RPAR command • ELSE command
-
-    ELSE  shift, and go to state 136
-
-    ELSE      [reduce using rule 26 (conditional)]
-    $default  reduce using rule 26 (conditional)
+    LPAR      [reduce using rule 52 (expression)]
+    TEQUAL    [reduce using rule 52 (expression)]
+    $default  reduce using rule 52 (expression)
 
 
-State 133
+State 121
+
+   27 conditional: IF LPAR expression RPAR command •
+   28            | IF LPAR expression RPAR command • ELSE command
+
+    ELSE  shift, and go to state 126
+
+    ELSE      [reduce using rule 27 (conditional)]
+    $default  reduce using rule 27 (conditional)
+
+
+State 122
 
    66 template_part: TEMPLATE_EXPR_START expression RCURLY •
 
     $default  reduce using rule 66 (template_part)
 
 
-State 134
+State 123
 
     3 statement_list: statement_list • statement
     7 function_expression: FUNC LPAR arguments RPAR LCURLY statement_list • RCURLY
@@ -2810,7 +2550,7 @@ State 134
     FUNC                 shift, and go to state 6
     LPAR                 shift, and go to state 7
     LCURLY               shift, and go to state 8
-    RCURLY               shift, and go to state 137
+    RCURLY               shift, and go to state 127
     LBRACKET             shift, and go to state 9
     SEMI                 shift, and go to state 10
     RETURN               shift, and go to state 11
@@ -2839,26 +2579,33 @@ State 134
     lvalue               go to state 33
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
 
 
-State 135
+State 124
 
     6 function: FUNC IDENT LPAR arguments RPAR LCURLY • statement_list RCURLY
+    8 function_expression: FUNC IDENT LPAR arguments RPAR LCURLY • statement_list RCURLY
 
     $default  reduce using rule 2 (statement_list)
 
-    statement_list  go to state 138
+    statement_list  go to state 128
 
 
-State 136
+State 125
 
-   27 conditional: IF LPAR expression RPAR command ELSE • command
+    8 function_expression: FUNC IDENT LPAR arguments RPAR • LCURLY statement_list RCURLY
+
+    LCURLY  shift, and go to state 129
+
+
+State 126
+
+   28 conditional: IF LPAR expression RPAR command ELSE • command
 
     FLOAT                shift, and go to state 4
     NUMBER               shift, and go to state 5
-    FUNC                 shift, and go to state 40
+    FUNC                 shift, and go to state 39
     LPAR                 shift, and go to state 7
     LCURLY               shift, and go to state 8
     LBRACKET             shift, and go to state 9
@@ -2875,7 +2622,7 @@ State 136
     TEMPLATE_START       shift, and go to state 20
 
     function_expression  go to state 23
-    command              go to state 139
+    command              go to state 130
     variableDeclaration  go to state 25
     method_call_expr     go to state 26
     method_call          go to state 27
@@ -2887,28 +2634,28 @@ State 136
     lvalue               go to state 33
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
 
 
-State 137
+State 127
 
     7 function_expression: FUNC LPAR arguments RPAR LCURLY statement_list RCURLY •
 
     $default  reduce using rule 7 (function_expression)
 
 
-State 138
+State 128
 
     3 statement_list: statement_list • statement
     6 function: FUNC IDENT LPAR arguments RPAR LCURLY statement_list • RCURLY
+    8 function_expression: FUNC IDENT LPAR arguments RPAR LCURLY statement_list • RCURLY
 
     FLOAT                shift, and go to state 4
     NUMBER               shift, and go to state 5
     FUNC                 shift, and go to state 6
     LPAR                 shift, and go to state 7
     LCURLY               shift, and go to state 8
-    RCURLY               shift, and go to state 140
+    RCURLY               shift, and go to state 131
     LBRACKET             shift, and go to state 9
     SEMI                 shift, and go to state 10
     RETURN               shift, and go to state 11
@@ -2937,19 +2684,94 @@ State 138
     lvalue               go to state 33
     variable             go to state 34
     template_literal     go to state 35
-    object_literal       go to state 36
-    array_literal        go to state 37
+    array_literal        go to state 36
 
 
-State 139
+State 129
 
-   27 conditional: IF LPAR expression RPAR command ELSE command •
+    8 function_expression: FUNC IDENT LPAR arguments RPAR LCURLY • statement_list RCURLY
 
-    $default  reduce using rule 27 (conditional)
+    $default  reduce using rule 2 (statement_list)
+
+    statement_list  go to state 132
 
 
-State 140
+State 130
+
+   28 conditional: IF LPAR expression RPAR command ELSE command •
+
+    $default  reduce using rule 28 (conditional)
+
+
+State 131
 
     6 function: FUNC IDENT LPAR arguments RPAR LCURLY statement_list RCURLY •
+    8 function_expression: FUNC IDENT LPAR arguments RPAR LCURLY statement_list RCURLY •
 
+    LPAR      reduce using rule 6 (function)
+    LPAR      [reduce using rule 8 (function_expression)]
+    POINT     reduce using rule 8 (function_expression)
+    PLUS      reduce using rule 8 (function_expression)
+    MINUS     reduce using rule 8 (function_expression)
+    MULT      reduce using rule 8 (function_expression)
+    DIV       reduce using rule 8 (function_expression)
+    EQUAL     reduce using rule 8 (function_expression)
+    TEQUAL    reduce using rule 8 (function_expression)
+    DIFF      reduce using rule 8 (function_expression)
+    LESS      reduce using rule 8 (function_expression)
+    MORE      reduce using rule 8 (function_expression)
+    LEQ       reduce using rule 8 (function_expression)
+    MEQ       reduce using rule 8 (function_expression)
+    REST      reduce using rule 8 (function_expression)
+    AND       reduce using rule 8 (function_expression)
+    OR        reduce using rule 8 (function_expression)
     $default  reduce using rule 6 (function)
+
+
+State 132
+
+    3 statement_list: statement_list • statement
+    8 function_expression: FUNC IDENT LPAR arguments RPAR LCURLY statement_list • RCURLY
+
+    FLOAT                shift, and go to state 4
+    NUMBER               shift, and go to state 5
+    FUNC                 shift, and go to state 6
+    LPAR                 shift, and go to state 7
+    LCURLY               shift, and go to state 8
+    RCURLY               shift, and go to state 133
+    LBRACKET             shift, and go to state 9
+    SEMI                 shift, and go to state 10
+    RETURN               shift, and go to state 11
+    IF                   shift, and go to state 12
+    IDENT                shift, and go to state 13
+    TRUE                 shift, and go to state 14
+    FALSE                shift, and go to state 15
+    NOT                  shift, and go to state 16
+    TYPE                 shift, and go to state 17
+    STRING_LITERAL       shift, and go to state 18
+    STRING_SINGLE_QUOTE  shift, and go to state 19
+    TEMPLATE_START       shift, and go to state 20
+
+    statement            go to state 21
+    function             go to state 22
+    function_expression  go to state 23
+    command              go to state 24
+    variableDeclaration  go to state 25
+    method_call_expr     go to state 26
+    method_call          go to state 27
+    returnStmt           go to state 28
+    assignment           go to state 29
+    conditional          go to state 30
+    block                go to state 31
+    expression           go to state 32
+    lvalue               go to state 33
+    variable             go to state 34
+    template_literal     go to state 35
+    array_literal        go to state 36
+
+
+State 133
+
+    8 function_expression: FUNC IDENT LPAR arguments RPAR LCURLY statement_list RCURLY •
+
+    $default  reduce using rule 8 (function_expression)

@@ -71,7 +71,6 @@
 %right NOT
 %left POINT
 %right ARROW 
-%left COLON 
 
 %start program
 
@@ -94,6 +93,7 @@ statement: function
 function : FUNC IDENT LPAR arguments RPAR LCURLY statement_list RCURLY { printf("REDUCE: function -> FUNC IDENT LPAR arguments RPAR LCURLY statement_list RCURLY\n"); }
 
 function_expression: FUNC LPAR arguments RPAR LCURLY statement_list RCURLY { printf("REDUCE: function_expression -> (anonymous)\n"); }
+  | FUNC IDENT LPAR arguments RPAR LCURLY statement_list RCURLY { printf("REDUCE: function_expression -> (named)\n"); }
   ;
 
 arguments: argument_list_opt { printf("REDUCE: arguments -> argument_list_opt\n"); }
@@ -127,7 +127,7 @@ method_call: method_call_expr SEMI { printf("REDUCE: method_call -> method_call_
 
 returnStmt  : RETURN expression SEMI {printf("REDUCE: returnStmt -> RETURN expression SEMI\n");};
 
-assignment  : lvalue ASSIGN expression SEMI { printf("REDUCE: assignment -> expression ASSIGN expression SEMI\n"); };
+assignment  : lvalue ASSIGN expression SEMI { printf("REDUCE: assignment -> lvalue ASSIGN expression SEMI\n"); };
 
 conditional : IF LPAR expression RPAR command { printf("REDUCE: conditional -> IF LPAR expression RPAR command\n"); }
             | IF LPAR expression RPAR command ELSE command { printf("REDUCE: conditional -> IF LPAR expression RPAR command ELSE command\n"); };
@@ -142,7 +142,6 @@ expression  : expression PLUS expression { printf("REDUCE: expression -> express
             | expression REST expression { printf("REDUCE: expression -> expression REST expression\n"); }
 
             | expression POINT IDENT { printf("REDUCE: expression -> expression POINT IDENT\n"); }
-            | lvalue { printf("REDUCE: expression -> expression POINT IDENT\n"); }
 
             /* Operadores booleanos e de comparação agora estão aqui */
             | expression EQUAL expression { printf("REDUCE: expression -> expression EQUAL expression\n"); }
@@ -159,23 +158,25 @@ expression  : expression PLUS expression { printf("REDUCE: expression -> express
             | LPAR expression RPAR { printf("REDUCE: expression -> LPAR expression RPAR\n"); }
             | method_call_expr { printf("REDUCE: expression -> method_call_expr\n"); }
             | variable { printf("REDUCE: expression -> variable\n"); }
+            | lvalue { printf("REDUCE: expression -> lvalue\n"); }
             | TRUE { printf("REDUCE: expression -> TRUE\n"); }
             | FALSE { printf("REDUCE: expression -> FALSE\n"); }
             | LPAR arguments RPAR ARROW expression { printf("REDUCE: expression -> LPAR arguments RPAR ARROW expression\n"); }
             | function_expression { printf("REDUCE: expression -> function_expression\n"); }
-            | object_literal { printf("REDUCE: expression -> object_literal\n"); }
             | array_literal { printf("REDUCE: expression -> array_literal\n"); }
             ;                
 
+/* Coloque isso perto de 'variable' */
 lvalue: IDENT { printf("REDUCE: lvalue -> IDENT\n"); }
-      | lvalue POINT IDENT { printf("REDUCE: lvalue -> expression POINT IDENT\n"); }
+      | lvalue POINT IDENT { printf("REDUCE: lvalue -> lvalue POINT IDENT\n"); }
       ;
 
-variable: NUMBER
-        | FLOAT
-        | STRING_LITERAL
-        | STRING_SINGLE_QUOTE
-        | template_literal
+variable: NUMBER { printf("REDUCE: variable -> NUMBER\n"); }
+        | FLOAT { printf("REDUCE: variable -> FLOAT\n"); }
+        | STRING_LITERAL { printf("REDUCE: variable -> STRING_LITERAL\n"); }
+        | STRING_SINGLE_QUOTE { printf("REDUCE: variable -> STRING_SINGLE_QUOTE\n"); }
+        | template_literal { printf("REDUCE: variable -> template_literal\n"); }
+
         ;
 
 template_literal: TEMPLATE_START template_body TEMPLATE_END 
@@ -193,7 +194,6 @@ template_part: TEMPLATE_CHUNK { printf("REDUCE: template_part -> TEMPLATE_CHUNK\
         go_to_template_state();};
 
 
-
 object_literal: LCURLY property_list_opt RCURLY
     { printf("REDUCE: object_literal -> { ... }\n"); }
     ;
@@ -206,9 +206,9 @@ property_list: property
              | property_list COMMA property
              ;
 
-property: lvalue COLON expression { printf("REDUCE: property -> key : value\n"); }
-        | variable COLON expression { printf("REDUCE: property -> key : value\n"); }
-    ;
+property: lvalue COLON expression { printf("REDUCE: property -> lvalue : expression\n"); }
+        | variable COLON expression { printf("REDUCE: property -> variable : expression\n"); }
+        ;
 
 array_literal: LBRACKET argument_list_opt RBRACKET
     { printf("REDUCE: array_literal -> [ ... ]\n"); }
