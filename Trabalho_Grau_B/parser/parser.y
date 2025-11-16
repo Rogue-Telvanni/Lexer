@@ -111,7 +111,22 @@ function: FUNC IDENT LPAR arguments RPAR LCURLY statement_list RCURLY { print_re
 
 function_expression: FUNC LPAR arguments RPAR LCURLY statement_list RCURLY { print_reduce("function_expression -> (anonymous)", @1.first_line); }
   | FUNC IDENT LPAR arguments RPAR LCURLY statement_list RCURLY { print_reduce("function_expression -> (named)", @1.first_line); }
-  ;
+  | FUNC IDENT LPAR arguments RPAR arguments RPAR LCURLY statement_list error '\n' {
+        /*
+            recuperação do erro, vou tentar adicionar qual o erro o usuário deve receber
+            para quando esquece de adicionar o fechamento da function
+        */
+
+        print_reduce("Function Error", @1.first_line);
+        yyerror("ERRO ESPECIFICO: Fechamento de função não encontrado token '}' possivelmente em falta");
+
+        /*
+            pelo que li na documnetação a gente precisa definir um token que ele deve encontrar
+            para começar a ler iniciando um novo estado de que consistente sem erro
+            em pensei em um caracter de nova linha
+        */
+    }
+    ;
 
 arguments: argument_list_opt { print_reduce("arguments -> argument_list_opt", @1.first_line); }
          ;
