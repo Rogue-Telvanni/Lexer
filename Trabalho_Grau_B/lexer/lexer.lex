@@ -1,6 +1,16 @@
+%option yylineno
 %{
     #include <stdio.h>
     #include "parser.tab.h"
+
+    #define YY_USER_ACTION \
+        yylloc.first_line = yylineno; \
+        yylloc.first_column = yycolumn; \
+        yylloc.last_line = yylineno; \
+        yylloc.last_column = yycolumn + yyleng; \
+        yycolumn += yyleng;
+        int yycolumn = 1;
+
 
     void go_to_template_state();
     void go_to_initial_state();
@@ -118,9 +128,10 @@ FUNCTION "function"
     return TEMPLATE_CHUNK; /* Retorna um "pedaço" de string */
 }
 
+\n  { yylineno++; yycolumn = 1; return '\n'; }
 
 <<EOF>> {
-    printf("End of file found");
+    printf("End of file found\n");
     yyterminate();
 }
 
