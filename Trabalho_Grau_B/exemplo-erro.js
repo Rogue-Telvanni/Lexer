@@ -3,9 +3,9 @@ function functest(){
 
 
 
-function loadReferenceTable() {
-   const tbody = document.getElementById('tableBody');
-   tbody.innerHTML = referenceData.map((item, index) = 'teste').join('');
-}
+// function loadReferenceTable() {
+//    const tbody = document.getElementById('tableBody');
+//    tbody.innerHTML = referenceData.map((item, index) = 'teste').join('');
+// }
 
-let teste = "string de teste
+// let teste = "string de teste

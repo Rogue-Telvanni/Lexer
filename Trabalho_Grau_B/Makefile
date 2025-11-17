@@ -1,7 +1,7 @@
 run:
 	cd parser && bison -d parser.y
 	cd lexer && flex lexer.lex
-	g++ -Iparser lexer/lex.yy.c parser/parser.tab.c -o gramatica
+	g++ -Iparser lexer/lex.yy.c parser/parser.tab.c  -o gramatica
 	./gramatica < exemplo-simples.js
 	
 fail:

@@ -108,25 +108,28 @@ semi_opt: SEMI
         | %empty
 
 function: FUNC IDENT LPAR arguments RPAR LCURLY statement_list RCURLY { print_reduce("function -> FUNC IDENT LPAR arguments RPAR LCURLY statement_list RCURLY", @1.first_line); }
+        | FUNC IDENT LPAR arguments RPAR LCURLY statement_list error
+        {
+            /*
+            recuperação do erro, vou tentar adicionar qual o erro o usuário deve receber
+            para quando esquece de adicionar o fechamento da function
+            */
+
+            /*
+                pelo que li na documnetação a gente precisa definir um token que ele deve encontrar
+                para começar a ler iniciando um novo estado de que consistente sem erro
+                em pensei em um caracter de nova linha
+            */
+
+
+            yyerror("ERRO: '}' de fechamento da função não encontrado");
+            yyclearin; 
+            yyerrok;   
+        };
 
 function_expression: FUNC LPAR arguments RPAR LCURLY statement_list RCURLY { print_reduce("function_expression -> (anonymous)", @1.first_line); }
   | FUNC IDENT LPAR arguments RPAR LCURLY statement_list RCURLY { print_reduce("function_expression -> (named)", @1.first_line); }
-  | FUNC IDENT LPAR arguments RPAR arguments RPAR LCURLY statement_list error '\n' {
-        /*
-            recuperação do erro, vou tentar adicionar qual o erro o usuário deve receber
-            para quando esquece de adicionar o fechamento da function
-        */
-
-        print_reduce("Function Error", @1.first_line);
-        yyerror("ERRO ESPECIFICO: Fechamento de função não encontrado token '}' possivelmente em falta");
-
-        /*
-            pelo que li na documnetação a gente precisa definir um token que ele deve encontrar
-            para começar a ler iniciando um novo estado de que consistente sem erro
-            em pensei em um caracter de nova linha
-        */
-    }
-    ;
+  ;
 
 arguments: argument_list_opt { print_reduce("arguments -> argument_list_opt", @1.first_line); }
          ;
@@ -166,7 +169,7 @@ conditional: IF LPAR expression RPAR command { print_reduce("conditional -> IF L
             | IF LPAR expression RPAR command ELSE command { print_reduce("conditional -> IF LPAR expression RPAR command ELSE command", @1.first_line); };
 
 block: LCURLY statement_list RCURLY { print_reduce("block -> LCURLY statement_list RCURLY", @1.first_line); }
-     ;
+        ;
 
 expression: expression PLUS expression { print_reduce("expression -> expression PLUS expression", @1.first_line); }
           | expression MINUS expression { print_reduce("expression -> expression MINUS expression", @1.first_line); }
@@ -197,6 +200,14 @@ expression: expression PLUS expression { print_reduce("expression -> expression 
           | LPAR arguments RPAR ARROW expression { print_reduce("expression -> LPAR arguments RPAR ARROW expression", @1.first_line); }
           | function_expression { print_reduce("expression -> function_expression", @1.first_line); }
           | array_literal { print_reduce("expression -> array_literal", @1.first_line); }
+
+
+          /*erros*/
+          | LPAR arguments RPAR error expression {
+            print_reduce("expression -> erro arrow", @1.first_line);
+            yyerror("=> Arrow Function esperado");
+          }
+
         ;                
 
 expression_or_object: expression
@@ -223,7 +234,6 @@ array_literal: LBRACKET argument_list_opt RBRACKET
     { print_reduce("array_literal -> [ ... ]", @1.first_line); }
     ;
 
-/* Coloque isso perto de 'variable' */
 lvalue: IDENT { print_reduce("lvalue -> IDENT", @1.first_line); }
       | lvalue POINT IDENT { print_reduce("lvalue -> lvalue POINT IDENT", @1.first_line); }
       ;

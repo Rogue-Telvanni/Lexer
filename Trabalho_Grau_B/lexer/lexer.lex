@@ -22,7 +22,7 @@ DIGIT [0-9]
 INTEGER {DIGIT}+
 FLOAT {DIGIT}+\.{DIGIT}+
 IDENTIFIER [a-zA-Z_][a-zA-Z0-9_]*
-WHITESPACE [ \t\r\n]+
+WHITESPACE [ \t\r]+
 COMMENT "//"[^\r\n]*
 ASSIGN "="
 COLON ":"
@@ -128,7 +128,7 @@ FUNCTION "function"
     return TEMPLATE_CHUNK; /* Retorna um "pedaço" de string */
 }
 
-\n  { yylineno++; yycolumn = 1; return '\n'; }
+"\n"  { yylineno++; yycolumn = 1; return '\n'; }
 
 <<EOF>> {
     printf("End of file found\n");
