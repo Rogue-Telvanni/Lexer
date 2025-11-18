@@ -3,6 +3,8 @@
 %{
   #include <stdio.h>
   #include <math.h>
+  #define DEBUG 0
+
   int yylex (void);
   void yyerror (char const *);
   extern int yylineno;
@@ -14,6 +16,10 @@
   int last_reduce_line = 0;
 
   void print_reduce(const char *rule, int line) {
+    if(DEBUG == 0){
+        return;
+    }
+
     if (line != last_reduce_line) {
         printf("\n");
         last_reduce_line = line;
@@ -61,6 +67,7 @@
 %token OR
 %token NOT
 %token TYPE
+%token NEWLINE
 %token WHITESPACE
 %token COMMENT
 %token ARROW
@@ -95,47 +102,37 @@
 program: statement_list
        ;
 
-statement_list: %empty
-              | statement_list statement
-              ;
+statement_list:
+      %empty
+    | statement_list statement
+    ;
 
 /* Um statement pode ser uma função ou um comando */
 statement: function
          | command
-         ;
 
 semi_opt: SEMI
+        | NEWLINE
         | %empty
 
-function: FUNC IDENT LPAR arguments RPAR LCURLY statement_list RCURLY { print_reduce("function -> FUNC IDENT LPAR arguments RPAR LCURLY statement_list RCURLY", @1.first_line); }
-        | FUNC IDENT LPAR arguments RPAR LCURLY statement_list error
-        {
-            /*
-            recuperação do erro, vou tentar adicionar qual o erro o usuário deve receber
-            para quando esquece de adicionar o fechamento da function
-            */
 
-            /*
-                pelo que li na documnetação a gente precisa definir um token que ele deve encontrar
-                para começar a ler iniciando um novo estado de que consistente sem erro
-                em pensei em um caracter de nova linha
-            */
+function:
+      FUNC IDENT LPAR arguments RPAR block  { print_reduce("function -> FUNC IDENT LPAR arguments RPAR block", @1.first_line); }
+    | FUNC IDENT LPAR arguments RPAR error RCURLY {
+          yyerror("ERRO: função com erro, recuperada até '}'");
+          yyerrok;
+      }
+    ;
 
-
-            yyerror("ERRO: '}' de fechamento da função não encontrado");
-            yyclearin; 
-            yyerrok;   
-        };
-
-function_expression: FUNC LPAR arguments RPAR LCURLY statement_list RCURLY { print_reduce("function_expression -> (anonymous)", @1.first_line); }
-  | FUNC IDENT LPAR arguments RPAR LCURLY statement_list RCURLY { print_reduce("function_expression -> (named)", @1.first_line); }
+function_expression: FUNC LPAR arguments RPAR block { print_reduce("function_expression -> (anonymous)", @1.first_line); }
+  | FUNC IDENT LPAR arguments RPAR block { print_reduce("function_expression -> (named)", @1.first_line); }
   ;
 
 arguments: argument_list_opt { print_reduce("arguments -> argument_list_opt", @1.first_line); }
          ;
 
 /* "argument_list_opt" significa "lista de argumentos opcional" (pode ser vazia) */
-argument_list_opt: %empty { print_reduce("argument_list_opt -> empty", yylineno); }
+argument_list_opt: %empty { print_reduce("argument_list_opt -> empty", @$.first_line); }
                  | argument_list { print_reduce("argument_list_opt -> argument_list", @1.first_line); }
                  ;
 
@@ -168,8 +165,26 @@ assignment: lvalue ASSIGN expression_or_object semi_opt { print_reduce("assignme
 conditional: IF LPAR expression RPAR command { print_reduce("conditional -> IF LPAR expression RPAR command", @1.first_line); }
             | IF LPAR expression RPAR command ELSE command { print_reduce("conditional -> IF LPAR expression RPAR command ELSE command", @1.first_line); };
 
-block: LCURLY statement_list RCURLY { print_reduce("block -> LCURLY statement_list RCURLY", @1.first_line); }
-        ;
+block:  LCURLY statement_list RCURLY { print_reduce("block -> LCURLY statement_list RCURLY", @1.first_line); }
+    | LCURLY statement_list error {
+          yyerror("ERRO: '}' de fechamento da função não encontrado");
+          yyerrok;
+          /* Skip until '}' */
+          while (yychar != RCURLY && yychar != YYEOF)
+              yychar = yylex();
+          if (yychar == RCURLY) { /* consume '}' */
+              yychar = YYEMPTY;
+          }
+      }
+    | LCURLY error RCURLY {
+          yyerror("ERRO: bloco vazio com erro");
+          yyerrok;
+      }
+    | LCURLY statement_list YYEOF {
+          yyerror("ERRO: bloco não fechado antes do EOF");
+          yyerrok;
+      }
+    ;
 
 expression: expression PLUS expression { print_reduce("expression -> expression PLUS expression", @1.first_line); }
           | expression MINUS expression { print_reduce("expression -> expression MINUS expression", @1.first_line); }
@@ -229,11 +244,18 @@ property_list: property
 property: lvalue COLON expression_or_object { print_reduce("property -> lvalue : expression_or_object", @1.first_line); }
         | variable COLON expression_or_object { print_reduce("property -> variable : expression_or_object", @1.first_line); }
         ;
-
-array_literal: LBRACKET argument_list_opt RBRACKET
-    { print_reduce("array_literal -> [ ... ]", @1.first_line); }
+array_literal:
+      LBRACKET argument_list_opt RBRACKET  { print_reduce("array_literal -> [ ... ]", @1.first_line); }
+    | LBRACKET argument_list_opt error RBRACKET {
+          yyerror("ERRO: ']' não encontrado no array, recuperado até ']'");
+          yyerrok;
+      }
+    | LBRACKET argument_list_opt error {
+          yyerror("ERRO: array não fechado antes do EOF");
+          yyerrok;
+      }
     ;
-
+    
 lvalue: IDENT { print_reduce("lvalue -> IDENT", @1.first_line); }
       | lvalue POINT IDENT { print_reduce("lvalue -> lvalue POINT IDENT", @1.first_line); }
       ;

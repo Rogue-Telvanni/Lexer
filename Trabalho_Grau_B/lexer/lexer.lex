@@ -100,6 +100,8 @@ FUNCTION "function"
 
 {IDENTIFIER} { return IDENT; }
 
+\n      { yylval = 0; return NEWLINE; }
+
 {WHITESPACE} { /*ignora*/ }
 
 {COMMENT} { /*ignora*/ }

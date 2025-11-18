@@ -2,10 +2,15 @@ function functest(){
     return 2 + 2
 
 
+function loadReferenceTable() {
+   const tbody = document.getElementById('tableBody');
+   tbody.innerHTML = referenceData.map((item, index) = 'teste').join('');
+}
 
-// function loadReferenceTable() {
-//    const tbody = document.getElementById('tableBody');
-//    tbody.innerHTML = referenceData.map((item, index) = 'teste').join('');
-// }
+let arr = [1,2,3
 
-// let teste = "string de teste
+console.log('erro acima!')
+
+let arr2 = [1,2,3
+
+console.log('outro erro acima!')
