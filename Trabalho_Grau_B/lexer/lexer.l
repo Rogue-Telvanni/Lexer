@@ -36,9 +36,15 @@ FUNCTION "function"
 
 %%
 
-{FLOAT} { return FLOAT; }
+{FLOAT} { 
+    yylval.fval = strtod(yytext, NULL);
+    return FLOAT; 
+}
 
-{INTEGER} { return NUMBER; }
+{INTEGER} { 
+    yylval.ival = atoi(yytext);
+    return INTEGER; 
+}
 
 {FUNCTION} { return FUNC; }
 
@@ -68,9 +74,9 @@ FUNCTION "function"
 
 "else" { return ELSE; }
 
-"true" { return TRUE; }
+"true" { yylval.ival = 1; return TRUE; }
 
-"false" { return FALSE; }
+"false" { yylval.ival = 0; return FALSE; }
 
 "&&" { return AND; }
 
@@ -98,9 +104,10 @@ FUNCTION "function"
 
 "." { return POINT; }
 
-{IDENTIFIER} { return IDENT; }
-
-\n      { yylval = 0; return NEWLINE; }
+{IDENTIFIER} { 
+    yylval.sval = strdup(yytext);
+    return IDENT; 
+}
 
 {WHITESPACE} { /*ignora*/ }
 
@@ -130,10 +137,9 @@ FUNCTION "function"
     return TEMPLATE_CHUNK; /* Retorna um "pedaço" de string */
 }
 
-"\n"  { yylineno++; yycolumn = 1; return '\n'; }
+"\n"  { yylineno++; yycolumn = 1; }
 
 <<EOF>> {
-    printf("End of file found\n");
     yyterminate();
 }
 

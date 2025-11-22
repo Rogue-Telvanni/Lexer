@@ -1,14 +1,21 @@
+CFLAGS += -Iparser
+
+IR ?= no
+DEBUG ?= 0
+
+ifeq ($(IR), yes)
+CFLAGS += -DIR_ENABLED
+endif
+
+ifeq ($(DEBUG), 1)
+CFLAGS += -DDEBUG
+endif
+
 run:
 	cd parser && bison -d parser.y
-	cd lexer && flex lexer.lex
-	g++ -Iparser lexer/lex.yy.c parser/parser.tab.c  -o gramatica
-	./gramatica < exemplo-simples.js
-	
-fail:
-	cd parser && bison -d parser.y
-	cd lexer && flex lexer.lex
-	g++ -Iparser lexer/lex.yy.c parser/parser.tab.c -o gramatica
-	./gramatica < exemplo-erro.js
+	cd lexer && flex lexer.l
+	g++ $(CFLAGS) lexer/lex.yy.c parser/parser.tab.c  -o gramatica
+	./gramatica < exemplos/$(FILE)
 	
 clean:
 	rm -f lexer/lex.yy.c
